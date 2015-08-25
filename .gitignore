@@ -3,5 +3,5 @@ node_modules/
 /edk.h
 /edkErrorCode.h
 /elsClient.h
-/EmoStateDDL.h
+/EmoStateDLL.h
 /node.h
