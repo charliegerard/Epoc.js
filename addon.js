@@ -5,18 +5,11 @@ var addon = require('bindings')('addon');
 var obj = new addon.NodeEPOCDriver();
 var _ = require('underscore');
 
-obj.connect('', _.throttle(function(e){
+
+obj.connect('/Users/cgerard/Library/Application Support/Emotiv/Profiles/charlie.emu', function(e){
 	obj.rezero();
-	console.log('this is working and is connected')
-}, 1000));
 
-// obj.connect(function(){
-// 	obj.disconnect();
-// 	console.log('this is working and is connected')
-// })
+	console.log('this is working and is connected');
+	console.log('gyro', e.gyroX+':'+ e.gyroY);
+}, 500);
 
-console.log('blablbalablbala')
-
-console.log('end of program')
-
-// obj.Reconnect(1);

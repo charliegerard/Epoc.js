@@ -23,7 +23,7 @@ Persistent<Function> NodeEPOCDriver::cb;
 Persistent<Function> NodeEPOCDriver::dcb;
 
 
-NodeEPOCDriver::NodeEPOCDriver() : profileLoaded(0), userID(0), connected(1), run(0), option(1){
+NodeEPOCDriver::NodeEPOCDriver() : profileLoaded(0), userID(0), connected(0), run(0), option(0){
   work = uv_loop_new();
   loop = uv_default_loop();
   uv_rwlock_init(&lock);
@@ -71,6 +71,7 @@ void NodeEPOCDriver::Init(Handle<Object> exports) {
 
   // Prototype
   NODE_SET_PROTOTYPE_METHOD(tpl, "connect", Connect);
+  NODE_SET_PROTOTYPE_METHOD(tpl, "rezero", Rezero);
   // NODE_SET_PROTOTYPE_METHOD(tpl, "reconnect", Reconnect);
   // NODE_SET_PROTOTYPE_METHOD(tpl, "work_cb", Work_cb);
   // NODE_SET_PROTOTYPE_METHOD(tpl, "after_work", After_work);
@@ -84,19 +85,10 @@ void NodeEPOCDriver::New(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = Isolate::GetCurrent();
   HandleScope scope(isolate);
 
-  // if (args.IsConstructCall()) {
-    // Invoked as constructor: `new MyObject(...)`
-    // double value = args[0]->IsUndefined() ? 0 : args[0]->NumberValue();
-    NodeEPOCDriver* obj = new NodeEPOCDriver();
-    obj->Wrap(args.This());
-    args.GetReturnValue().Set(args.This());
-  // } else {
-    // Invoked as plain function `MyObject(...)`, turn into construct call.
-    // const int argc = 1;
-    // Local<Value> argv[argc] = { args[0] };
-    // Local<Function> cons = Local<Function>::New(isolate, constructor);
-    // args.GetReturnValue().Set(cons->NewInstance(argc, argv));
-  // }
+  NodeEPOCDriver* obj = new NodeEPOCDriver();
+  obj->Wrap(args.This());
+  args.GetReturnValue().Set(args.This());
+
 }
 
 void NodeEPOCDriver::Connect(const FunctionCallbackInfo<Value>& args){
@@ -116,7 +108,8 @@ void NodeEPOCDriver::Connect(const FunctionCallbackInfo<Value>& args){
         Local<Integer> i = Local<Integer>::Cast(args[2]);
         int selected = (int)(i->Int32Value());
         if (selected != 0){
-            obj->option = 1;
+          //OPTION IS 1
+          obj->option = 1;
         }
     }
 
@@ -146,22 +139,24 @@ void NodeEPOCDriver::Reconnect(NodeEPOCDriver* obj){
    // NodeEPOCDriver* obj = ObjectWrap::Unwrap<NodeEPOCDriver>(args.This());
         // read arg for option, engine or remote..
         // read option for profile
+
         while (obj->connected == 0){
 
             switch(obj->option){
                 case 0: {
-                    obj->connected = (EE_EngineConnect() == EDK_OK)? 1 : 0;
-                    break;
+                  obj->connected = (EE_EngineConnect() == EDK_OK)? 1 : 0;
+                  break;
                 }
                 case 1: {
-                    obj->connected = (EE_EngineRemoteConnect("127.0.0.1",1726)==EDK_OK)? 1: 0;
-                    break;
+                    // I ALWAYS GET HERE
+                    // obj->connected = (EE_EngineRemoteConnect("127.0.0.1",1726)==EDK_OK)? 1: 0;
+                  obj->connected = (EE_EngineRemoteConnect("127.0.0.1",3008)==EDK_OK)? 1: 0;
+                  break;
                 }
                 default: {break;}
             }
-            std::cout << "7" << std::endl;
-
         }
+        // std::cout << "7" << std::endl;
 
         if (obj->connected == 1){
             std::cout << "connected to emotiv" << std::endl;
@@ -183,6 +178,7 @@ void NodeEPOCDriver::LoadUser(NodeEPOCDriver* obj){
   bool errorOnce = true;
 
   if (obj->profileLoaded == 0){
+    std::cout << "i should get here" << std::endl;
       int error = EE_LoadUserProfile(obj->userID, obj->profileFile.c_str());
       if (error == 0){
           unsigned long activeActions = 0;
@@ -220,6 +216,7 @@ void NodeEPOCDriver::After_work(uv_work_t* req) {
   obj->cb.Reset();
 
   uv_rwlock_wrunlock(&obj->lock);
+      std::cout << "do i ever get here"<< std::endl;
 
   TryCatch try_catch;
 
@@ -298,6 +295,8 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
   EE_HeadsetGyroRezero(obj->userID);
   uv_rwlock_wrunlock(&obj->lock);
 
+  std::cout << "so logically i should be here" << std::endl;
+
   while (true){
 
     uv_rwlock_rdlock(&obj->lock);
@@ -307,17 +306,22 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
 
     if (connected && run){
 //                 // read in the profile
+      // std::cout << "and now there?" << std::endl;
 
         EmoEngineEventHandle eEvent = EE_EmoEngineEventCreate();
         EmoStateHandle eState = EE_EmoStateCreate();
         int state = EE_EngineGetNextEvent(eEvent);
         if (state == EDK_OK) {
-          EE_Event_t eventType = EE_EmoEngineEventGetType(eEvent);
 
-// //                     unsigned int userid = 0;
-// //                     EE_EmoEngineEventGetUserId(eEvent, &userid);
-// //                     EE_GetUserProfile(hw->userID, eEvent);
-//                     //EE_Event_t eventType  = EE_EmoEngineEventGetType(eEvent);
+           std::cout << "and there?" << std::endl;
+          // EE_Event_t eventType = EE_EmoEngineEventGetType(eEvent);
+
+                    unsigned int userid = 0;
+                    EE_EmoEngineEventGetUserId(eEvent, &userid);
+                    EE_GetUserProfile(obj->userID, eEvent);
+                    EE_Event_t eventType  = EE_EmoEngineEventGetType(eEvent);
+
+
             if (eventType == EE_UserRemoved){
                 uv_rwlock_wrlock(&obj->lock);
                 obj->profileLoaded = 0;
@@ -325,10 +329,18 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
 
                 std::cout << "the epoc dongle is disconnected, please reconnect" << std::endl;
             } else if (eventType == EE_UserAdded) {
+
+               std::cout << "user?" << std::endl;
+
+
                 uv_rwlock_wrlock(&obj->lock);
                 LoadUser(obj);
                 uv_rwlock_wrunlock(&obj->lock);
             } else  if (eventType == EE_EmoStateUpdated){
+
+               // std::cout << "here?" << std::endl;
+
+
                 EE_EmoEngineEventGetEmoState(eEvent, eState);
                 baton_t* baton = new baton_t();
                 baton->obj = obj;
@@ -374,10 +386,13 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
 
                 int status = uv_queue_work(obj->loop, req2, process, (uv_after_work_cb)after_process);
                 assert(status == 0);
+             } else if(eventType == EE_EmulatorError){
+              std::cout << "here?" << std::endl;
              }
         }
         EE_EmoStateFree(eState);
         EE_EmoEngineEventFree(eEvent);
+
     } else {
         break;
     }
@@ -417,6 +432,8 @@ void NodeEPOCDriver::Rezero(const v8::FunctionCallbackInfo<Value>& args){
     bool connected = (obj->connected == 1);
     bool run = (obj->run ==1);
 
+    std::cout << "am i in rezero??" << std::endl;
+
     if (connected && run){
         std::cout << "rezero the gryo" << std::endl;
 
@@ -425,29 +442,4 @@ void NodeEPOCDriver::Rezero(const v8::FunctionCallbackInfo<Value>& args){
     uv_rwlock_wrunlock(&obj->lock);
     // return Undefined();
 }
-
-
-// extern "C" {
-//   void init (v8::Handle<v8::Object> target)
-//   {
-//     NodeEPOCDriver::Init(target);
-//   }
-
-//   NODE_MODULE(addon, Init);
-// }
-
-// Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, New);
-
-extern "C" {
-  // void init (v8::Local<v8::Object> target){
-  //   NodeEPOCDriver::Init(target);
-  // }
-
-  // NODE_MODULE(addon, init);
-  // #include "edk.h"
-  // #include "myobject.h"
-}
-
-
-
 

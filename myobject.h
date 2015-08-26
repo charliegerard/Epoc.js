@@ -39,10 +39,8 @@ class NodeEPOCDriver : public node::ObjectWrap {
   static void Connect(const v8::FunctionCallbackInfo<v8::Value>& args);
   static void Disconnect(const v8::FunctionCallbackInfo<v8::Value>& args);
   static void Rezero(const v8::FunctionCallbackInfo<v8::Value>& args);
-  // static void Reconnect(const v8::FunctionCallbackInfo<v8::Value>& args);
   static void Reconnect(NodeEPOCDriver* obj);
   static v8::Persistent<v8::Function> constructor;
-  // static v8::Persistent<v8::Function> cb;
   static void Work_cb(uv_work_t* req);
   static void After_work(uv_work_t* req);
   static void LoadUser(NodeEPOCDriver* obj);
