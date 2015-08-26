@@ -44,7 +44,7 @@ class NodeEPOCDriver : public node::ObjectWrap {
   static v8::Persistent<v8::Function> constructor;
   // static v8::Persistent<v8::Function> cb;
   static void Work_cb(uv_work_t* req);
-  // static void After_work(uv_work_t* req);
+  static void After_work(uv_work_t* req);
   static void LoadUser(NodeEPOCDriver* obj);
   static void process(uv_work_t* req);
   static void after_process(uv_work_t* req);

@@ -23,7 +23,7 @@ Persistent<Function> NodeEPOCDriver::cb;
 Persistent<Function> NodeEPOCDriver::dcb;
 
 
-NodeEPOCDriver::NodeEPOCDriver() : profileLoaded(0), userID(0), connected(0), run(0), option(1){
+NodeEPOCDriver::NodeEPOCDriver() : profileLoaded(0), userID(0), connected(1), run(0), option(1){
   work = uv_loop_new();
   loop = uv_default_loop();
   uv_rwlock_init(&lock);
@@ -132,7 +132,7 @@ void NodeEPOCDriver::Connect(const FunctionCallbackInfo<Value>& args){
     // Local<Function> cons = Local<Function>::New(isolate, cb);
     args.GetReturnValue().Set(Local<Function>::New(isolate, obj->cb));
 
-    // Reconnect(obj);
+    Reconnect(obj);
 
     uv_rwlock_wrunlock(&obj->lock);
 
@@ -150,7 +150,7 @@ void NodeEPOCDriver::Reconnect(NodeEPOCDriver* obj){
 
             switch(obj->option){
                 case 0: {
-                    // obj->connected = (EE_EngineConnect() == EDK_OK)? 1 : 0;
+                    obj->connected = (EE_EngineConnect() == EDK_OK)? 1 : 0;
                     break;
                 }
                 case 1: {
@@ -169,8 +169,8 @@ void NodeEPOCDriver::Reconnect(NodeEPOCDriver* obj){
             req->data = obj;
             obj->run=1;
 
-            // int status = uv_queue_work(obj->loop, req, Work_cb, (uv_after_work_cb)After_work);
-            // assert(status == 0);
+            int status = uv_queue_work(obj->loop, req, Work_cb, (uv_after_work_cb)After_work);
+            assert(status == 0);
 
             std::cout << "starting epoc event loop" << std::endl;
         }
@@ -179,7 +179,7 @@ void NodeEPOCDriver::Reconnect(NodeEPOCDriver* obj){
 
 }
 
-void LoadUser(NodeEPOCDriver* obj){
+void NodeEPOCDriver::LoadUser(NodeEPOCDriver* obj){
   bool errorOnce = true;
 
   if (obj->profileLoaded == 0){
@@ -199,43 +199,43 @@ void LoadUser(NodeEPOCDriver* obj){
 }
 
 
-void process(uv_work_t* req)
+void NodeEPOCDriver::process(uv_work_t* req)
 {
 }
 
-// void After_work(uv_work_t* req) {
-// // //        baton_t *baton = static_cast<baton_t *>(req->data);
-  // NodeEPOCDriver *obj = static_cast<NodeEPOCDriver *>(req->data);
-  // Isolate* isolate = Isolate::GetCurrent();
-  // HandleScope scope(isolate);
+void NodeEPOCDriver::After_work(uv_work_t* req) {
+// //        baton_t *baton = static_cast<baton_t *>(req->data);
+  NodeEPOCDriver *obj = static_cast<NodeEPOCDriver *>(req->data);
+  Isolate* isolate = Isolate::GetCurrent();
+  HandleScope scope(isolate);
 
-  // std::cout << "after work loop" << std::endl;
+  std::cout << "after work loop" << std::endl;
 
-  // uv_rwlock_wrlock(&obj->lock);
+  uv_rwlock_wrlock(&obj->lock);
 
-  // obj->profileLoaded = 0;
-  // obj->userID = 0;
+  obj->profileLoaded = 0;
+  obj->userID = 0;
 
-  // Local<Value> argv[0];
-  // obj->cb.Reset();
+  Local<Value> argv[0];
+  obj->cb.Reset();
 
-  // uv_rwlock_wrunlock(&obj->lock);
+  uv_rwlock_wrunlock(&obj->lock);
 
-  // TryCatch try_catch;
+  TryCatch try_catch;
 
-//   // if (obj->dcb !=Null())
-//   // if (obj->dcb != Null(isolate))
-//       // obj->dcb->Call(Context::GetCurrent()->Global(), 0, argv);
+  // if (obj->dcb !=Null())
+  // if (obj->dcb != Null(isolate))
+      // obj->dcb->Call(Context::GetCurrent()->Global(), 0, argv);
 
-  // if (try_catch.HasCaught()) {
-  //     node::FatalException(try_catch);
-  // }
-// }
-
-
+  if (try_catch.HasCaught()) {
+      node::FatalException(try_catch);
+  }
+}
 
 
-void after_process(uv_work_t* req) {
+
+
+void NodeEPOCDriver::after_process(uv_work_t* req) {
   Isolate* isolate = Isolate::GetCurrent();
   HandleScope scope(isolate);
   baton_t* baton = static_cast<baton_t *>(req->data);
@@ -289,7 +289,7 @@ void after_process(uv_work_t* req) {
 
 
 
-void Work_cb(uv_work_t* req){
+void NodeEPOCDriver::Work_cb(uv_work_t* req){
 
   NodeEPOCDriver *obj = static_cast<NodeEPOCDriver *>(req->data);
 
@@ -372,8 +372,8 @@ void Work_cb(uv_work_t* req){
                 uv_work_t *req2 = new uv_work_t();
                 req2->data = baton;
 
-                // int status = uv_queue_work(obj->loop, req2, process, (uv_after_work_cb)after_process);
-                // assert(status == 0);
+                int status = uv_queue_work(obj->loop, req2, process, (uv_after_work_cb)after_process);
+                assert(status == 0);
              }
         }
         EE_EmoStateFree(eState);
