@@ -295,8 +295,6 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
   EE_HeadsetGyroRezero(obj->userID);
   uv_rwlock_wrunlock(&obj->lock);
 
-  std::cout << "so logically i should be here" << std::endl;
-
   while (true){
 
     uv_rwlock_rdlock(&obj->lock);
@@ -306,7 +304,6 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
 
     if (connected && run){
 //                 // read in the profile
-      // std::cout << "and now there?" << std::endl;
 
         EmoEngineEventHandle eEvent = EE_EmoEngineEventCreate();
         EmoStateHandle eState = EE_EmoStateCreate();
@@ -314,12 +311,17 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
         if (state == EDK_OK) {
 
            std::cout << "and there?" << std::endl;
-          // EE_Event_t eventType = EE_EmoEngineEventGetType(eEvent);
 
-                    unsigned int userid = 0;
-                    EE_EmoEngineEventGetUserId(eEvent, &userid);
-                    EE_GetUserProfile(obj->userID, eEvent);
+                    // unsigned int userid = 0;
+                    // EE_EmoEngineEventGetUserId(eEvent, &userid);
+                    // EE_GetUserProfile(obj->userID, eEvent);
+
+                    // int state1 = EE_GetUserProfile(obj->userID, eEvent);
+                    // if(state1 == EDK_OK){
+                    //   std::cout << "Get user profile all good" << std::endl;
+                    // }
                     EE_Event_t eventType  = EE_EmoEngineEventGetType(eEvent);
+                    std::cout << eventType << std::endl;
 
 
             if (eventType == EE_UserRemoved){
@@ -330,7 +332,7 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
                 std::cout << "the epoc dongle is disconnected, please reconnect" << std::endl;
             } else if (eventType == EE_UserAdded) {
 
-               std::cout << "user?" << std::endl;
+               std::cout << "User Added" << std::endl;
 
 
                 uv_rwlock_wrlock(&obj->lock);
@@ -338,8 +340,7 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
                 uv_rwlock_wrunlock(&obj->lock);
             } else  if (eventType == EE_EmoStateUpdated){
 
-               // std::cout << "here?" << std::endl;
-
+               std::cout << "Emo State Updated" << std::endl;
 
                 EE_EmoEngineEventGetEmoState(eEvent, eState);
                 baton_t* baton = new baton_t();
@@ -367,12 +368,15 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
                 baton->eyebrow= expressivStates[ EXP_EYEBROW ];
                 baton->furrow= expressivStates[ EXP_FURROW ]; // furrow
                 baton->smile= expressivStates[ EXP_SMILE ]; // smile
+
+                // std::cout << baton->smile << std::endl;
+
                 baton->clench= expressivStates[ EXP_CLENCH ]; // clench
                 baton->smirkLeft= expressivStates[ EXP_SMIRK_LEFT  ]; // smirk left
                 baton->smirkRight= expressivStates[ EXP_SMIRK_RIGHT ]; // smirk right
                 baton->laugh= expressivStates[ EXP_LAUGH       ]; // laugh
 
-//                         // Affectiv Suite results
+                        // Affectiv Suite results
                 baton->shortTermExcitement= ES_AffectivGetExcitementShortTermScore(eState);
                 baton->longTermExcitement= ES_AffectivGetExcitementLongTermScore(eState);
 
@@ -380,14 +384,18 @@ void NodeEPOCDriver::Work_cb(uv_work_t* req){
 
                 baton->update = true;
 
-//                         // create an event to throw on queue for processing..
+                         // create an event to throw on queue for processing..
                 uv_work_t *req2 = new uv_work_t();
                 req2->data = baton;
 
                 int status = uv_queue_work(obj->loop, req2, process, (uv_after_work_cb)after_process);
                 assert(status == 0);
              } else if(eventType == EE_EmulatorError){
-              std::cout << "here?" << std::endl;
+              std::cout << "emulator error" << std::endl;
+             } else if(eventType == EE_UnknownEvent){
+              std::cout << "unknown event" << std::endl;
+             } else if(eventType == EE_CognitivEvent){
+              std::cout << "cognitive event" << std::endl;
              }
         }
         EE_EmoStateFree(eState);
