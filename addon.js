@@ -7,7 +7,10 @@ var BrainSensor = require('bindings')('BrainSensor');
 
 
 
-console.log(BrainSensor.connect());
+BrainSensor.connect(function() {
+	console.log("errrmaggahhd! A callback!");
+})
+
 
 // obj.connect('/Users/cgerard/Library/Application Support/Emotiv/Profiles/charlie.emu', _.throttle(function(e){
 	// obj.connect('', function(e){
