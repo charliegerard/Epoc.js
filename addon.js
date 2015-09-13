@@ -7,9 +7,9 @@ var BrainSensor = require('bindings')('BrainSensor');
 
 
 
-BrainSensor.connect(function() {
-	console.log("errrmaggahhd! A callback!");
-})
+BrainSensor.connect(function(event) {
+	console.log("errrmaggahhd! A callback with an event!", event);
+});
 
 
 // obj.connect('/Users/cgerard/Library/Application Support/Emotiv/Profiles/charlie.emu', _.throttle(function(e){
