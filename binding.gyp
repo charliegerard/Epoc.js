@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "BrainSensor",
-      "sources": [ "BrainSensor.cc", "Functions.cc" ],
+      "sources": [ "BrainSensor.cc", "Functions.cc", "epocutils.cpp"],
       "include_dirs" : [
         "<!(node -e \"require('nan')\")"
       ],
