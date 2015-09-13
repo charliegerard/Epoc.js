@@ -65,7 +65,7 @@ NAN_METHOD(Connect) {
       billy.newDataToRead = false; // set the 'newDataToRead' bool to false to prevent unnecessary polling ( ... )
 
       v8::Local<v8::Object> event = Nan::New<v8::Object>();
-      Nan::Set(event, Nan::New("key").ToLocalChecked(), Nan::New("value").ToLocalChecked());
+      Nan::Set(event, Nan::New("time").ToLocalChecked(), Nan::New(billy.time));
 
       v8::Local<v8::Value> parameters[1];
       parameters[0] = event;
