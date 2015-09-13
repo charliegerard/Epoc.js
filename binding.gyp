@@ -1,8 +1,11 @@
 {
   "targets": [
     {
-      "target_name": "addon",
-      "sources": [ "addon.cc", "myobject.cc" ],
+      "target_name": "BrainSensor",
+      "sources": [ "BrainSensor.cc", "Functions.cc" ],
+      "include_dirs" : [
+        "<!(node -e \"require('nan')\")"
+      ],
       "conditions": [
                 ['OS=="mac"', {
                     "cflags": [ "-m64" ],
@@ -39,3 +42,4 @@
     }
   ]
 }
+
