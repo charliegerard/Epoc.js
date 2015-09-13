@@ -41,39 +41,41 @@ NAN_METHOD(Connect) {
     epocutils::handleEvents(connected, epoc_state, eEvent, eState, userID, billy); // the latest data from the Epoc headset 'll update the 'epocheadset' struct content
     // check if new data is available
 
-    if ( billy.newDataToRead ) {
-      //std::cout << "billy time: " << billy.time << " UserID: " << billy.userID << std::endl;
-      std::cout << "\n\n-----------------------------------------------------------------" << std::endl;
-      std::cout << "-Epoc Headset infos-------------------" << std::endl;
-      std::cout << "Time" << "\t  UserID" << "\t  Signal" << std::endl;
-      std::cout << billy.time << "\t  " << billy.userID << "\t  " << billy.wirelessSignalStatus << std::endl;
-      std::cout << "-Expressiv suite----------------------" << std::endl;
-      std::cout << "Blink" << "        WinkL" << "        WinkR" << "        LookL" << "        LookR" << "        Eyebrow" << "        Furrow" << std::endl;
-      std::cout << billy.isBlinking << "        " << billy.isWinkingLeft << "        " << billy.isWinkingRight << "        "
-            << billy.isLookingLeft << "        " << billy.isLookingRight << "        " << billy.eyebrow << "        " << billy.furrow << std::endl;
-      std::cout << "Smile" << "        Clench" << "        SmirkL" << "        SmirkR" << "        Laugh" << std::endl;
-      std::cout << billy.smile << "        " << billy.clench << "        "
-            << billy.smirkLeft << "        " << billy.smirkRight << "        " <<billy.laugh << std::endl;
-      std::cout << "-Affectiv suite-----------------------" << std::endl;
-      std::cout << "Short-T ext" << "\t  Long-T ext" << "\t  Eng/Boredom" << std::endl;
-      std::cout << billy.shortTermExcitement << "\t  " << billy.longTermExcitement << "\t  " << billy.engagementBoredom << std::endl;
-      std::cout << "-Cognitiv suite-----------------------" << std::endl;
-      std::cout << "Cog action" << "\t  Cog action conf" << std::endl;
-      std::cout << billy.cogntivAction << "\t  " << billy.cogntiviActionConfidence << std::endl;
-      std::cout << "-----------------------------------------------------------------\n\n\n" << std::endl;
+    //std::cout << "billy time: " << billy.time << " UserID: " << billy.userID << std::endl;
+    std::cout << "\n\n-----------------------------------------------------------------" << std::endl;
+    std::cout << "-Epoc Headset infos-------------------" << std::endl;
+    std::cout << "Time" << "\t  UserID" << "\t  Signal" << std::endl;
+    std::cout << billy.time << "\t  " << billy.userID << "\t  " << billy.wirelessSignalStatus << std::endl;
+    std::cout << "-Expressiv suite----------------------" << std::endl;
+    std::cout << "Blink" << "        WinkL" << "        WinkR" << "        LookL" << "        LookR" << "        Eyebrow" << "        Furrow" << std::endl;
+    std::cout << billy.isBlinking << "        " << billy.isWinkingLeft << "        " << billy.isWinkingRight << "        "
+          << billy.isLookingLeft << "        " << billy.isLookingRight << "        " << billy.eyebrow << "        " << billy.furrow << std::endl;
+    std::cout << "Smile" << "        Clench" << "        SmirkL" << "        SmirkR" << "        Laugh" << std::endl;
+    std::cout << billy.smile << "        " << billy.clench << "        "
+          << billy.smirkLeft << "        " << billy.smirkRight << "        " <<billy.laugh << std::endl;
+    std::cout << "-Affectiv suite-----------------------" << std::endl;
+    std::cout << "Short-T ext" << "\t  Long-T ext" << "\t  Eng/Boredom" << std::endl;
+    std::cout << billy.shortTermExcitement << "\t  " << billy.longTermExcitement << "\t  " << billy.engagementBoredom << std::endl;
+    std::cout << "-Cognitiv suite-----------------------" << std::endl;
+    std::cout << "Cog action" << "\t  Cog action conf" << std::endl;
+    std::cout << billy.cogntivAction << "\t  " << billy.cogntiviActionConfidence << std::endl;
+    std::cout << "-----------------------------------------------------------------\n\n\n" << std::endl;
 
-      billy.newDataToRead = false; // set the 'newDataToRead' bool to false to prevent unnecessary polling ( ... )
+    billy.newDataToRead = false; // set the 'newDataToRead' bool to false to prevent unnecessary polling ( ... )
 
-      v8::Local<v8::Object> event = Nan::New<v8::Object>();
-      Nan::Set(event, Nan::New("time").ToLocalChecked(), Nan::New(billy.time));
+    v8::Local<v8::Object> event = Nan::New<v8::Object>();
+    Nan::Set(event, Nan::New("newData").ToLocalChecked(), Nan::New(billy.newDataToRead));
+    Nan::Set(event, Nan::New("wirelessSignalStatus").ToLocalChecked(), Nan::New(billy.wirelessSignalStatus));
+    Nan::Set(event, Nan::New("time").ToLocalChecked(), Nan::New(billy.time));
+    Nan::Set(event, Nan::New("blink").ToLocalChecked(), Nan::New(billy.isBlinking));
 
-      v8::Local<v8::Value> parameters[1];
-      parameters[0] = event;
+    v8::Local<v8::Value> parameters[1];
+    parameters[0] = event;
 
-      Nan::MakeCallback(Nan::GetCurrentContext()->Global(), callbackHandle, 1, parameters);
+    Nan::MakeCallback(Nan::GetCurrentContext()->Global(), callbackHandle, 1, parameters);
 
-      handledEvents += 1;
-    }
+    handledEvents += 1;
+
     // render ( updated ) SDL stuff & other things like that
   }
 
