@@ -1,11 +1,4 @@
 var BrainSensor = require('bindings')('BrainSensor');
-// module.exports = require('./build/Release/emojs');
-// var addon = require('./build/Release/addon');
-
-// var obj = new addon.NodeEPOCDriver();
-// var _ = require('underscore');
-
-
 
 BrainSensor.connect(function(event) {
 	console.log("errrmaggahhd! A callback with an event!", event);
