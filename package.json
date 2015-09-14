@@ -1,7 +1,10 @@
 {
-  "name": "object_wrap",
-  "version": "0.0.0",
-  "description": "Node.js Addons Example #6",
+  "name": "Epoc.js",
+  "version": "0.0.1",
+  "description": "Node.js Addon for the Emotiv EPOC headset",
+  "author": "Charlie Gerard",
+  "email": "charlie.a.gerard@gmail.com",
+  "license": "MIT License",
   "main": "brainSensor.js",
   "gypfile": true,
   "dependencies": {
