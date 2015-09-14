@@ -76,7 +76,7 @@ EmoStateHandle epocutils::createStateHandle()
 //void initializeEpocHeadsetStruct(unsigned int& userID, epocutils::EpocHeadset_struct& epocheadset)
 void epocutils::initializeEpocHeadsetStruct(unsigned int& userID, epocutils::EpocHeadset_t& epocheadset)
 {
-  // we init the bool that we'll use to know if we have unread data from the Epoc headset 
+  // we init the bool that we'll use to know if we have unread data from the Epoc headset
   epocheadset.newDataToRead = false;
   // we initialize the EpocHeadset struct with all its member parameters to 0, except the userID wich equals the one passed as argument
   epocheadset.time = 0.0f;
@@ -100,9 +100,9 @@ void epocutils::initializeEpocHeadsetStruct(unsigned int& userID, epocutils::Epo
   epocheadset.longTermExcitement = 0.0f;
   epocheadset.engagementBoredom = 0.0f;
   // Cognitiv suite
-  epocheadset.cogntivAction = 0;
-  epocheadset.cogntiviActionConfidence = 0; // close, but not the same as 'power' ( YES, I DISAGREE with Emotiv's words on this ( ... )
-  
+  epocheadset.cognitivAction = 0;
+  epocheadset.cognitiviActionConfidence = 0; // close, but not the same as 'power' ( YES, I DISAGREE with Emotiv's words on this ( ... )
+
   std::cout << "epocutils:: Epoc headset struct initialized." << std::endl; // inform that the EpocHeadset struct has been initialized
 }
 
@@ -113,7 +113,7 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
   if ( connected )
   {
     epoc_state = EE_EngineGetNextEvent(eEvent); // get the latest EmoEngine events ( aka 'stuff from Epoc' )
-    
+
     if (epoc_state == EDK_OK)
     {
       EE_Event_t eventType = EE_EmoEngineEventGetType(eEvent);
@@ -131,7 +131,7 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
 	epocheadset.time = ES_GetTimeFromStart(eState);
 	epocheadset.userID = userID;
 	epocheadset.wirelessSignalStatus = static_cast<int>(ES_GetWirelessSignalStatus(eState));
-	
+
 	// Expressiv suite
 	epocheadset.isBlinking = ES_ExpressivIsBlink(eState);
 	epocheadset.isWinkingLeft = ES_ExpressivIsLeftWink(eState);
@@ -162,9 +162,9 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
 	epocheadset.engagementBoredom = ES_AffectivGetEngagementBoredomScore(eState);
 
 	// Cognitiv suite
-	epocheadset.cogntivAction = static_cast<int>(ES_CognitivGetCurrentAction(eState));
-	epocheadset.cogntiviActionConfidence = ES_CognitivGetCurrentActionPower(eState);
-	
+	epocheadset.cognitivAction = static_cast<int>(ES_CognitivGetCurrentAction(eState));
+	epocheadset.cognitiviActionConfidence = ES_CognitivGetCurrentActionPower(eState);
+
 	epocheadset.newDataToRead = true; // we update our boolean ot indicate that data is yet to be read
 
       }
@@ -173,7 +173,7 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
     {
       std::cout << "epocutils:: No new data from the Epoc headset:" << std::endl; // inform that new data is available
       std::cout << "epocutils:: Internal error in Emotiv Engine!" << std::endl;
-      // handle that :/ 
+      // handle that :/
     }
-  }  
+  }
 }

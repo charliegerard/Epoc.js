@@ -1,7 +1,7 @@
 /*  epocutils.h - header file
 *
-*   Emotiv Epoc Ubuntu SDK Dev Edition - namespaced utility header file - by StephaneAG 2013 
-* 
+*   Emotiv Epoc Ubuntu SDK Dev Edition - namespaced utility header file - by StephaneAG 2013
+*
 *   supposed to be used:  1 -> as a utility class ( include header file in necessary .cpp file )
 *                         2 -> as a utility class, embedded in a library that is available system wide ( .so file )
 *
@@ -25,13 +25,13 @@
 namespace epocutils
 {
 
-  
+
 
   void helloWorld(); // a dummy 'Hello World' fcn
   int highFive(); // anothe dummy fcn
 
   /* the REAL functions & stuff of the 'epocuutils' helper */
-  
+
 
   /* a 'EpocHeadset_struct' structure to hold all the stuff we're interested in */
   //typedef struct EpocHeadset_struct
@@ -40,7 +40,7 @@ namespace epocutils
     // bool to prevent unnecessary polling
     bool newDataToRead;
 
-    // -- Epoc 'original' values -- // R: " #include <typeinfo> & then  std::cout << typeid( <the-var-name> ).name() << std::endl; ", but still not that easy to use ( ...) 
+    // -- Epoc 'original' values -- // R: " #include <typeinfo> & then  std::cout << typeid( <the-var-name> ).name() << std::endl; ", but still not that easy to use ( ...)
     float time; // aka, returned a 'f' from the comment above in comments
     unsigned int userID;
     int wirelessSignalStatus; // R: do a 'static_cast<int>(ES_GetWIrelessSignalStatus(eState))' as else the type will be 'EE_SignalStrength_t' ( enum )
@@ -51,7 +51,7 @@ namespace epocutils
     int isLookingLeft;
     int isLookingRight;
         // Digg the doc & ask Emotiv for the 'IsEyesOpen', 'IsLookingUp' & 'IsLookingDown' fcn ( ... )
-    float eyebrow; // R: " expressivStates[ EXP_EYEBROW ] " 
+    float eyebrow; // R: " expressivStates[ EXP_EYEBROW ] "
     float furrow;
     float smile;
     float clench;
@@ -64,8 +64,8 @@ namespace epocutils
     float engagementBoredom;
           // Digg the doc & ask Emotiv for the 'Meditation' & 'Frustration'
     // Cognitiv suite
-    int cogntivAction;
-    float cogntiviActionConfidence;
+    int cognitivAction;
+    float cognitiviActionConfidence;
 
   //} EpocHeadset;
   };
@@ -91,7 +91,7 @@ namespace epocutils
   void initializeEpocHeadsetStruct(unsigned int& userID, EpocHeadset_t& epocheadset);
 
   /* To DO - 'createInitializedEpocHeadsetStruct'*/
-  
+
   /* handle fresh data from the Epoc headset, if connected, & update the passed 'EpocHeadset_struct' structure with that data */
   //void handleEvents(bool& connected, int& epoc_state, EmoEngineEventHandle& eEvent, EmoStateHandle& eState, unsigned int& userID, EpocHeadset& epocheadset);
   void handleEvents(bool& connected, int& epoc_state, EmoEngineEventHandle& eEvent, EmoStateHandle& eState, unsigned int& userID, EpocHeadset_t& epocheadset);
