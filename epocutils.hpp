@@ -50,6 +50,8 @@ namespace epocutils
     int isWinkingRight;
     int isLookingLeft;
     int isLookingRight;
+    int isLookingUp;
+    int isLookingDown;
         // Digg the doc & ask Emotiv for the 'IsEyesOpen', 'IsLookingUp' & 'IsLookingDown' fcn ( ... )
     float eyebrow; // R: " expressivStates[ EXP_EYEBROW ] "
     float furrow;

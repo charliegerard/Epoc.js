@@ -48,6 +48,7 @@ NAN_METHOD(Connect) {
     std::cout << "Blink" << "        WinkL" << "        WinkR" << "        LookL" << "        LookR" << "        Eyebrow" << "        Furrow" << std::endl;
     std::cout << user.isBlinking << "        " << user.isWinkingLeft << "        " << user.isWinkingRight << "        "
           << user.isLookingLeft << "        " << user.isLookingRight << "        " << user.eyebrow << "        " << user.furrow << std::endl;
+    std::count << "----- Looking up ----- " << user.isLookingUp << "       ----  looking down ----- " << user.lookingLeft << "     "   <<  std::endl;
     std::cout << "Smile" << "        Clench" << "        SmirkL" << "        SmirkR" << "        Laugh" << std::endl;
     std::cout << user.smile << "        " << user.clench << "        "
           << user.smirkLeft << "        " << user.smirkRight << "        " <<user.laugh << std::endl;
@@ -70,6 +71,8 @@ NAN_METHOD(Connect) {
     Nan::Set(event, Nan::New("winkingRight").ToLocalChecked(), Nan::New(user.isWinkingRight));
     Nan::Set(event, Nan::New("lookingLeft").ToLocalChecked(), Nan::New(user.isLookingLeft));
     Nan::Set(event, Nan::New("lookingRight").ToLocalChecked(), Nan::New(user.isLookingRight));
+    Nan::Set(event, Nan::New("lookingUp").ToLocalChecked(), Nan::New(user.isLookingUp));
+    Nan::Set(event, Nan::New("lookingDown").ToLocalChecked(), Nan::New(user.isLookingDown));
     Nan::Set(event, Nan::New("smile").ToLocalChecked(), Nan::New(user.smile));
     Nan::Set(event, Nan::New("smirkRight").ToLocalChecked(), Nan::New(user.smirkRight));
     Nan::Set(event, Nan::New("smirkLeft").ToLocalChecked(), Nan::New(user.smirkLeft));

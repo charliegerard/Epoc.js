@@ -88,6 +88,8 @@ void epocutils::initializeEpocHeadsetStruct(unsigned int& userID, epocutils::Epo
   epocheadset.isWinkingRight = 0;
   epocheadset.isLookingLeft = 0;
   epocheadset.isLookingRight = 0;
+  epocheadset.isLookingUp = 0;
+  epocheadset.isLookingDown = 0;
   epocheadset.eyebrow = 0.0f;
   epocheadset.furrow = 0.0f;
   epocheadset.smile = 0.0f;
@@ -138,6 +140,8 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
 	epocheadset.isWinkingRight = ES_ExpressivIsRightWink(eState);
 	epocheadset.isLookingLeft = ES_ExpressivIsLookingLeft(eState);
 	epocheadset.isLookingRight = ES_ExpressivIsLookingRight(eState);
+  epocheadset.isLookingUp = ES_ExpressivIsLookingUp(eState);
+  epocheadset.isLookingDown = ES_ExpressivIsLookingDown(eState);
 
 	std::map<EE_ExpressivAlgo_t, float> expressivStates;
 	EE_ExpressivAlgo_t upperFaceAction = ES_ExpressivGetUpperFaceAction(eState);
@@ -163,6 +167,14 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
 
 	// Cognitiv suite
 	epocheadset.cognitivAction = static_cast<int>(ES_CognitivGetCurrentAction(eState));
+
+  if(epocheadset.cognitivAction == 0x0002){
+    epocheadset.isPushing
+  }
+
+  // DO SOMETHING HERE TO GET ACTIONS LIKE PULL, PUSH
+
+
 	epocheadset.cognitiviActionConfidence = ES_CognitivGetCurrentActionPower(eState);
 
 	epocheadset.newDataToRead = true; // we update our boolean ot indicate that data is yet to be read
