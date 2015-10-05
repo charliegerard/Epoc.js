@@ -25,11 +25,6 @@
 namespace epocutils
 {
 
-
-
-  void helloWorld(); // a dummy 'Hello World' fcn
-  int highFive(); // anothe dummy fcn
-
   /* the REAL functions & stuff of the 'epocuutils' helper */
 
 
@@ -43,6 +38,11 @@ namespace epocutils
     // -- Epoc 'original' values -- // R: " #include <typeinfo> & then  std::cout << typeid( <the-var-name> ).name() << std::endl; ", but still not that easy to use ( ...)
     float time; // aka, returned a 'f' from the comment above in comments
     unsigned int userID;
+    int gyroY;
+    int gyroX;
+    // float xmax = 0;
+    // double buffer;
+    unsigned int bufferSizeInSample;
     int wirelessSignalStatus; // R: do a 'static_cast<int>(ES_GetWIrelessSignalStatus(eState))' as else the type will be 'EE_SignalStrength_t' ( enum )
     // Expressiv suite
     int isBlinking;
@@ -88,15 +88,18 @@ namespace epocutils
   /* create an 'EmoStateHandle' */
   EmoStateHandle createStateHandle();
 
+  DataHandle createDataHandle();
+
+
   /* initialize the struct members ( I actually don't know if it's actually required, but it's always nice to init parameters before setting values to them anyway ( ... ) */
   //void initializeEpocHeadsetStruct(unsigned int& userID, EpocHeadset& epocheadset);
-  void initializeEpocHeadsetStruct(unsigned int& userID, EpocHeadset_t& epocheadset);
+  void initializeEpocHeadsetStruct(unsigned int& userID, EpocHeadset_t& epocheadset, unsigned int bufferSizeInSample);
 
   /* To DO - 'createInitializedEpocHeadsetStruct'*/
 
   /* handle fresh data from the Epoc headset, if connected, & update the passed 'EpocHeadset_struct' structure with that data */
   //void handleEvents(bool& connected, int& epoc_state, EmoEngineEventHandle& eEvent, EmoStateHandle& eState, unsigned int& userID, EpocHeadset& epocheadset);
-  void handleEvents(bool& connected, int& epoc_state, EmoEngineEventHandle& eEvent, EmoStateHandle& eState, unsigned int& userID, EpocHeadset_t& epocheadset);
+  void handleEvents(bool& connected, int& epoc_state, EmoEngineEventHandle& eEvent, EmoStateHandle& eState, unsigned int& userID, EpocHeadset_t& epocheadset, DataHandle hData, unsigned int& bufferSizeInSample);
 
   /* TO DO - even just to know how to do it - ~same fcn as above but accept a 'fcn&' as last argument, to wich it 'd pass a struct/class when done processing new events ( if any ) */
 
