@@ -82,6 +82,7 @@ void epocutils::initializeEpocHeadsetStruct(unsigned int& userID, epocutils::Epo
   epocheadset.cognitiviActionConfidence = 0; // close, but not the same as 'power' ( YES, I DISAGREE with Emotiv's words on this ( ... )
   epocheadset.bufferSizeInSample = 1;
   epocheadset.gyroX;
+  epocheadset.gyroY;
 
   std::cout << "epocutils:: Epoc headset struct initialized." << std::endl; // inform that the EpocHeadset struct has been initialized
 }
@@ -120,14 +121,16 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
 
         double* buffer = new double[bufferSizeInSample];
         EE_DataGet(hData, ED_GYROX, buffer, bufferSizeInSample);
+        EE_DataGet(hData, ED_GYROY, buffer, bufferSizeInSample);
 
         int gyroX;
         int gyroY;
         //Test with that
-        EE_HeadsetGyroRezero(userID);
-        //
+        // EE_HeadsetGyroRezero(userID);
+
         if(EE_HeadsetGetGyroDelta(userID, &gyroX, &gyroY) == EDK_OK){
           epocheadset.gyroX = gyroX;
+          epocheadset.gyroY = gyroY;
         }
 
       ////////////////////////////////////////////

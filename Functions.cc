@@ -66,7 +66,11 @@ NAN_METHOD(Connect) {
     // std::cout << "-----------------------------------------------------------------\n\n\n" << std::endl;
     // std::cout << "----------- GYRO X -------------- " << user.gyroX << "------------------ " << std::endl;
     if(user.gyroX){
-      std::cout << "gyroX" << user.gyroX << std::endl;
+      std::cout << "gyroX " << user.gyroX << std::endl;
+    }
+
+    if(user.gyroY){
+      std::cout << "gyroY " << user.gyroY << std::endl;
     }
 
     user.newDataToRead = false; // set the 'newDataToRead' bool to false to prevent unnecessary polling ( ... )
@@ -87,7 +91,8 @@ NAN_METHOD(Connect) {
     Nan::Set(event, Nan::New("smirkLeft").ToLocalChecked(), Nan::New(user.smirkLeft));
     Nan::Set(event, Nan::New("laugh").ToLocalChecked(), Nan::New(user.laugh));
     Nan::Set(event, Nan::New("cognitivAction").ToLocalChecked(), Nan::New(user.cognitivAction));
-    // Nan::Set(event, Nan::New("gyroX").ToLocalChecked(), Nan::New(user.gyroX));
+    Nan::Set(event, Nan::New("gyroX").ToLocalChecked(), Nan::New(user.gyroX));
+    Nan::Set(event, Nan::New("gyroY").ToLocalChecked(), Nan::New(user.gyroY));
 
     v8::Local<v8::Value> parameters[1];
     parameters[0] = event;
