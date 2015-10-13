@@ -9,7 +9,8 @@
   "gypfile": true,
   "dependencies": {
     "bindings": "~1.2.1",
-    "underscore": "^1.8.3",
-    "nan": "*"
+    "nan": "*",
+    "sphero": "^0.3.0",
+    "underscore": "^1.8.3"
   }
 }

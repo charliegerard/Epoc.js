@@ -65,13 +65,14 @@ NAN_METHOD(Connect) {
     // std::cout << user.cognitivAction << "\t  " << user.cognitiviActionConfidence << std::endl;
     // std::cout << "-----------------------------------------------------------------\n\n\n" << std::endl;
     // std::cout << "----------- GYRO X -------------- " << user.gyroX << "------------------ " << std::endl;
-    if(user.gyroX){
-      std::cout << "gyroX " << user.gyroX << std::endl;
-    }
 
-    if(user.gyroY){
-      std::cout << "gyroY " << user.gyroY << std::endl;
-    }
+    // if(user.gyroX){
+    //   std::cout << "gyroX " << user.gyroX << std::endl;
+    // }
+    //
+    // if(user.gyroY){
+    //   std::cout << "gyroY " << user.gyroY << std::endl;
+    // }
 
     user.newDataToRead = false; // set the 'newDataToRead' bool to false to prevent unnecessary polling ( ... )
 
