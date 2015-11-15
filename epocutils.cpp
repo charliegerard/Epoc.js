@@ -103,10 +103,10 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
 
       // Log the EmoState if it has been updated
       if (eventType == EE_EmoStateUpdated){
-      	std::cout << "epocutils:: New data from the Epoc headset." << std::endl; // inform that new data is available
+      	// std::cout << "epocutils:: New data from the Epoc headset." << std::endl; // inform that new data is available
               EE_EmoEngineEventGetEmoState(eEvent, eState);
       	const float timestamp = ES_GetTimeFromStart(eState);
-      	std::cout<<"epocutils:: Timestamp: " << timestamp <<" New EmoState from user: " << userID << std::endl;
+      	// std::cout<<"epocutils:: Timestamp: " << timestamp <<" New EmoState from user: " << userID << std::endl;
 
       	// write data from the EmoEngine to the EpocHeadset struct ... or just log it to stdout for the moment ?
       	epocheadset.time = ES_GetTimeFromStart(eState);
