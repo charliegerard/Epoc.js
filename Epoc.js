@@ -8,20 +8,19 @@ console.log('waiting....')
 
 orb.connect(function(){
 	console.log("Sphero connected....")
-	// spheroControl(orb);
+	spheroControl(orb);
 })
 
-// function spheroControl(sphero){
+function spheroControl(sphero){
 	Epoc.connect(function(event) {
-
 
 		if(event.blink > 0){
 			console.log("blink!")
-			// sphero.roll(70, 0, 1);
 		}
 
 		if(event.lookingLeft > 0){
 			console.log('LEFT')
+			sphero.roll(70, 0, 1);
 		}
 
 		if(event.lookingUp > 0){
@@ -34,12 +33,12 @@ orb.connect(function(){
 
 		if(event.lookingRight > 0){
 			console.log('RIGHT')
+			sphero.roll(90, 0, 1);
 		}
 
 		if(event.smile > 0){
 			console.log('SMILE')
-			// sphero.roll(0, 0, 0);
+			sphero.roll(0, 0, 0);
 		}
 	});
-// }
-//
+}
