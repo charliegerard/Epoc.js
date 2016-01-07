@@ -1,5 +1,5 @@
 {
-  "name": "epoc.js",
+  "name": "epocjs",
   "version": "1.0.0",
   "description": "Node.js Addon for the Emotiv EPOC headset",
   "author": "Charlie Gerard <charlie.a.gerard@gmail.com>",
