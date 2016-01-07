@@ -79,6 +79,34 @@ Detect if the user blinked:
 
 ---
 
+#### Winking Left / Right
+
+The headset can detect if the user is winking:
+
+```
+  if(event.winkingLeft > 0){
+    // do something
+  }
+
+  if(event.winkingRight > 0){
+    // do something
+  }
+```
+
+---
+
+#### Laugh
+
+Detect if the user is laughing:
+
+```
+  if(event.laugh > 0){
+    // do something
+  }
+```
+
+---
+
 ## Next steps
 
 * Add Gyroscope tracking
