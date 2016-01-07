@@ -5,12 +5,11 @@
   "author": "Charlie Gerard",
   "email": "charlie.a.gerard@gmail.com",
   "license": "MIT License",
-  "main": "Epoc.js",
+  "main": "src/Epoc.js",
   "gypfile": true,
   "dependencies": {
     "bindings": "~1.2.1",
     "nan": "*",
-    "sphero": "^0.3.0",
     "underscore": "^1.8.3"
   }
 }

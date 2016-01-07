@@ -1,4 +1,4 @@
-#Node.js addon for the Emotiv EPOC.
+#Node.js addon for the Emotiv EPOC [WIP].
 
 Using the [EpocUtils program](https://github.com/stephaneAG/epocutils).
 
