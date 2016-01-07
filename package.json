@@ -1,11 +1,17 @@
 {
-  "name": "Epoc.js",
+  "name": "epoc.js",
   "version": "1.0.0",
   "description": "Node.js Addon for the Emotiv EPOC headset",
-  "author": "Charlie Gerard",
-  "email": "charlie.a.gerard@gmail.com",
+  "author": "Charlie Gerard <charlie.a.gerard@gmail.com>",
+  "git repository": "https://github.com/charliegerard/Epoc.js",
+  "keywords": [
+    "node.js",
+    "nodejs",
+    "emotiv",
+    "epoc"
+  ],
   "license": "MIT License",
-  "main": "src/Epoc.js",
+  "main": "src/epoc.js",
   "gypfile": true,
   "dependencies": {
     "bindings": "~1.2.1",

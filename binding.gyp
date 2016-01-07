@@ -1,8 +1,8 @@
 {
   "targets": [
     {
-      "target_name": "Epoc",
-      "sources": [ "Epoc.cc", "Functions.cc", "epocutils.cpp"],
+      "target_name": "epoc",
+      "sources": [ "epoc.cc", "Functions.cc", "epocutils.cpp"],
       "include_dirs" : [
         "<!(node -e \"require('nan')\")"
       ],
@@ -42,4 +42,3 @@
     }
   ]
 }
-
