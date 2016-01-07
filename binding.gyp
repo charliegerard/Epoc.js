@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "epoc",
+      "target_name": "index",
       "sources": [ "epoc.cc", "Functions.cc", "epocutils.cpp"],
       "include_dirs" : [
         "<!(node -e \"require('nan')\")"
