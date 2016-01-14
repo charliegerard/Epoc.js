@@ -1,8 +1,8 @@
-# Node.js addon for the Emotiv EPOC
+# JavaScript framework for the Emotiv EPOC [Work in progress]
 
-Using the [EpocUtils program](https://github.com/stephaneAG/epocutils).
+This framework provides an interface to access data from the Emotiv EPOC brain sensor using Node.js.
 
-Still a work in progress.
+To use this framework, you're gonna need an EPOC or EPOC+ that you can buy [here](https://emotiv.com/). 
 
 ## How to Install
 
@@ -119,3 +119,5 @@ Thanks to [Cam Swords](https://github.com/camswords) for his help :)
 ## License
 
 Licensed under the MIT license.
+
+*Using the [EpocUtils program](https://github.com/stephaneAG/epocutils).
