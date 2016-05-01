@@ -1,6 +1,6 @@
 "use strict"
 
-var Epoc = require('bindings')('epoc');
+var Epoc = require('bindings')('index');
 
 Epoc.connect(function(event) {
 
