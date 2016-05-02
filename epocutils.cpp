@@ -6,14 +6,41 @@
 
 /* connect to the Epoc headset */
 int epocutils::connect(bool& connected){
-  if ( EE_EngineConnect() == EDK_OK ){
-    connected = true; // update the Epoc headset connection status
-    std::cout << "epocutils:: Now connected to the Epoc headset." << std::endl; // inform that we're successfully connected
-    return 0; // return 0 as no errors occured
-  } else {
-    std::cout << "epocutils:: An error occured while trying to connect to the Epoc headset." << std::endl; // inform that an error occured
-    return 1; // return 1 as an error occured
-  }
+
+    int option;
+      std::cout << "===================================================================" << std::endl;
+      std::cout << "  Emotiv EPOC+/Insght Tools & SDK helper :: epocUtils2.0 (UPDATE)  " << std::endl;
+      std::cout << "===================================================================" << std::endl;
+      std::cout << "Press '1' to start and connect to the EmoEngine                    " << std::endl;
+      std::cout << "Press '2' to connect to the EmoComposer                            " << std::endl;
+      std::cout << ">> ";
+      std::cin >> option;
+
+      switch(option){
+        case 1: {
+          if ( EE_EngineConnect() == EDK_OK ){
+            connected = true; // update the Epoc headset connection status
+            std::cout << "epocutils:: Now connected to the Epoc headset." << std::endl; // inform that we're successfully connected
+            return 0; // return 0 as no errors occured
+          }
+          break;
+        }
+
+        case 2: {
+          if ( EE_EngineRemoteConnect("127.0.0.1", 1726) != EDK_OK) {
+            std::string errMsg = "epocutils:: Cannot connect to EmoComposer on [127.0.0.1]:1726";
+            // throw std::runtime_error(errMsg.c_str());
+          }
+          break;
+        }
+        default:
+          // throw std::runtime_error("epocutils:: Invalid option...");
+          break;
+      }
+        connected = true;
+        std::cout << "epocutils:: Now connected to the Epoc headset and start receiving EmoState !" << std::endl;
+        return 0;
+
 }
 
 /* disconnect from the Epoc headset ( WARNING: this function WILL NOT free the 'EmoStateHandle' neither the 'EmoEngineEventHandle' ! ) */
@@ -81,9 +108,10 @@ void epocutils::initializeEpocHeadsetStruct(unsigned int& userID, epocutils::Epo
   epocheadset.cognitivAction = 0;
   epocheadset.cognitiviActionConfidence = 0; // close, but not the same as 'power' ( YES, I DISAGREE with Emotiv's words on this ( ... )
   epocheadset.bufferSizeInSample = 1;
-  epocheadset.gyroX;
-  epocheadset.gyroY;
+  // epocheadset.gyroX;
+  // epocheadset.gyroY;
 
+  epocheadset.isPushing = 0;
   std::cout << "epocutils:: Epoc headset struct initialized." << std::endl; // inform that the EpocHeadset struct has been initialized
 }
 
@@ -170,6 +198,11 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
       	epocheadset.cognitivAction = static_cast<int>(ES_CognitivGetCurrentAction(eState));
 
       	epocheadset.cognitiviActionConfidence = ES_CognitivGetCurrentActionPower(eState);
+
+        // Test with mental commands
+        std::map<EE_CognitivAction_t, float> mentalStates;
+        epocheadset.isPushing = mentalStates[ COG_PUSH ];
+
 
       	epocheadset.newDataToRead = true; // we update our boolean ot indicate that data is yet to be read
 

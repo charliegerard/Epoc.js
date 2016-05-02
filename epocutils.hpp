@@ -69,6 +69,9 @@ namespace epocutils
     int cognitivAction;
     float cognitiviActionConfidence;
 
+    //Test mental command
+    int isPushing;
+
   //} EpocHeadset;
   };
 

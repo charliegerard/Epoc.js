@@ -44,7 +44,7 @@ NAN_METHOD(Connect) {
     epocutils::handleEvents(connected, epoc_state, eEvent, eState, userID, user, hData, bufferSizeInSample); // the latest data from the Epoc headset 'll update the 'epocheadset' struct content
     // check if new data is available
 
-    // //std::cout << "user time: " << user.time << " UserID: " << user.userID << std::endl;
+    // std::cout << "user time: " << user.time << " UserID: " << user.userID << std::endl;
     // std::cout << "\n\n-----------------------------------------------------------------" << std::endl;
     // std::cout << "-Epoc Headset infos-------------------" << std::endl;
     // std::cout << "Time" << "\t  UserID" << "\t  Signal" << std::endl;
@@ -92,6 +92,8 @@ NAN_METHOD(Connect) {
     Nan::Set(event, Nan::New("smirkLeft").ToLocalChecked(), Nan::New(user.smirkLeft));
     Nan::Set(event, Nan::New("laugh").ToLocalChecked(), Nan::New(user.laugh));
     Nan::Set(event, Nan::New("cognitivAction").ToLocalChecked(), Nan::New(user.cognitivAction));
+    Nan::Set(event, Nan::New("cognitiviActionConfidence").ToLocalChecked(), Nan::New(user.cognitiviActionConfidence));
+    Nan::Set(event, Nan::New("push").ToLocalChecked(), Nan::New(user.isPushing));
     Nan::Set(event, Nan::New("gyroX").ToLocalChecked(), Nan::New(user.gyroX));
     Nan::Set(event, Nan::New("gyroY").ToLocalChecked(), Nan::New(user.gyroY));
 
