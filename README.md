@@ -2,7 +2,7 @@
 
 This framework provides an interface to access data from the Emotiv EPOC brain sensor using Node.js.
 
-To use this framework, you're gonna need an EPOC or EPOC+ that you can buy [here](https://emotiv.com/). 
+To use this framework, you're gonna need an EPOC or EPOC+ that you can buy [here](https://emotiv.com/).
 
 ## How to Install
 
@@ -107,10 +107,72 @@ Detect if the user is laughing:
 
 ---
 
+
+#### Cognitive Actions (Recently added - still need to test them)
+
+Actions available:
+
+- push
+- pull
+- lift
+- drop
+- left
+- right
+- rotate left
+- rotate right
+- rotate clockwise
+- rotate counter clockwise
+- rotate reverse
+- disappear
+
+```
+  switch(cognitivAction){
+    case 2:
+      console.log('push')
+      break;
+    case 4:
+      console.log('pull')
+      break;
+    case 8:
+      console.log('lift')
+      break;
+    case 16:
+      console.log('drop')
+      break;
+    case 32:
+      console.log('left')
+      break;
+    case 64:
+      console.log('right')
+      break;
+    case 128:
+      console.log('rotate left')
+      break;
+    case 256:
+      console.log('rotate right')
+      break;
+    case 512:
+      console.log('rotate clockwise')
+      break;
+    case 1024:
+      console.log('rotate counter clockwise')
+      break;
+    case 2048:
+      console.log('rotate forwards')
+      break;
+    case 4096:
+      console.log('rotate reverse')
+    case 8192:
+      console.log('disappear')
+  }
+
+```
+
+---
+
 ## Next steps
 
 * Add Gyroscope tracking
-* Add cognitive tracking of actions like pulling, pushing, etc...
 
 ## Special Thanks
 
