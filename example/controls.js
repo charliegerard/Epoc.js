@@ -1,78 +1,78 @@
 "use strict"
 
 var Epoc = require('bindings')('index');
+var pastAction;
+var action = "?";
 
 Epoc.connect(function(event) {
 
+	pastAction = action;
+
 	if(event.blink > 0){
-		console.log('blink')
+		action = 'blink';
 	}
 
 	if(event.lookingLeft > 0){
-		console.log('looking left')
+		action = 'looking left'
 	}
 
 	if(event.lookingUp > 0){
-		console.log('looking up')
+		action = 'looking up'
 	}
 
 	if(event.lookingDown > 0){
-		console.log('looking down')
+		action = 'looking down'
 	}
 
 	if(event.lookingRight > 0){
-		console.log('looking right')
+		action = 'looking right'
 	}
 
 	if(event.smile > 0){
-		console.log('smile')
+		action = 'smile'
 	}
 
 	switch(event.cognitivAction){
 		case 2:
-			console.log('push')
+			action = 'push'
 			break;
 		case 4:
-			console.log('pull')
+			action = 'pull'
 			break;
 		case 8:
-			console.log('lift')
+			action = 'lift'
 			break;
 		case 16:
-			console.log('drop')
+			action = 'drop'
 			break;
 		case 32:
-			console.log('left')
+			action = 'left'
 			break;
 		case 64:
-			console.log('right')
+			action = 'right'
 			break;
 		case 128:
-			console.log('rotate left')
+			action = 'rotate left'
 			break;
 		case 256:
-			console.log('rotate right')
+			action = 'rotate right'
 			break;
 		case 512:
-			console.log('rotate clockwise')
+			action = 'rotate clockwise'
 			break;
 		case 1024:
-			console.log('rotate counter clockwise')
+			action = 'rotate counter clockwise'
 			break;
 		case 2048:
-			console.log('rotate forwards')
+			action = 'rotate forwards'
 			break;
 		case 4096:
-			console.log('rotate reverse')
+			action = 'rotate reverse'
 		case 8192:
-			console.log('disappear')
+			action = 'disappear'
 	}
 
-	// if(event.cognitiviActionConfidence > 0){
-	// 	console.log('cognitive action confidence')
-	// }
-
-	// if(event.push > 0){
-	// 	console.log('push')
-	// }
+	if(pastAction !== action){
+		console.log('action', action)
+	}
 });
