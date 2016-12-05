@@ -129,6 +129,8 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
       EE_EmoEngineEventGetUserId(eEvent, &userID);
       EE_DataAcquisitionEnable(userID, true);
 
+      EE_LoadUserProfile(userID, "/Users/charliegerard/Library/Application Support/Emotiv/Profiles/Charlie.emu");
+
       // Log the EmoState if it has been updated
       if (eventType == EE_EmoStateUpdated){
       	// std::cout << "epocutils:: New data from the Epoc headset." << std::endl; // inform that new data is available

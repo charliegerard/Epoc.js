@@ -16,10 +16,11 @@
                    },
                     "link_settings": {
                         "libraries": [
-                         "/usr/local/lib/EmotivXavier-PREMIUM/libedk.dylib",
-                         "/usr/local/lib/EmotivXavier-PREMIUM/libedk.1.dylib",
-                         "/usr/local/lib/EmotivXavier-PREMIUM/libedk_ultils_mac.dylib",
-                         "/usr/local/lib/EmotivXavier-PREMIUM/libiomp5.dylib"
+                         "/usr/local/lib/libedk.dylib",
+                         "/usr/local/lib/libedk.1.dylib",
+                         "/usr/local/lib/libedk.1.0.0.dylib",
+                         "/usr/local/lib/libedk_ultils_mac.dylib",
+                         "/usr/local/lib/libiomp5.dylib"
                         ]
                     }
                 }],
