@@ -33,43 +33,48 @@ Epoc.connect(function(event) {
 	}
 
 	switch(event.cognitivAction){
+		case 1:
+			action = "neutral";
+			break;
 		case 2:
-			action = 'push'
+			action = 'push';
 			break;
 		case 4:
-			action = 'pull'
+			action = 'pull';
 			break;
 		case 8:
-			action = 'lift'
+			action = 'lift';
 			break;
 		case 16:
-			action = 'drop'
+			action = 'drop';
 			break;
 		case 32:
-			action = 'left'
+			action = 'left';
 			break;
 		case 64:
-			action = 'right'
+			action = 'right';
 			break;
 		case 128:
-			action = 'rotate left'
+			action = 'rotate left';
 			break;
 		case 256:
-			action = 'rotate right'
+			action = 'rotate right';
 			break;
 		case 512:
-			action = 'rotate clockwise'
+			action = 'rotate clockwise';
 			break;
 		case 1024:
-			action = 'rotate counter clockwise'
+			action = 'rotate counter clockwise';
 			break;
 		case 2048:
-			action = 'rotate forwards'
+			action = 'rotate forwards';
 			break;
 		case 4096:
-			action = 'rotate reverse'
+			action = 'rotate reverse';
+			break;
 		case 8192:
-			action = 'disappear'
+			action = 'disappear';
+			break;
 	}
 
 	if(pastAction !== action){

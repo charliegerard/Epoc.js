@@ -10,6 +10,7 @@ NAN_METHOD(Connect) {
   EmoStateHandle       eState = epocutils::createStateHandle(); // create an 'EmoStateHandle' using the 'epocutils' helper
   DataHandle           hData = epocutils::createDataHandle();
   unsigned int         userID = 0; // create a user ID
+  unsigned long pActiveActionsOut = 0x0000;
   int                  epoc_state = 0; // create a int variable that'll hold the return codes from the EmoEngine ( EDK_OK, etc .. )
   bool                 connected = false; // create a boolean that'll be used to gather data from the Epoc headset if true ( must be set to 'true' to handle new events with 'epocutils::handleEvents()' )
   //epocutils::EpocHeadset         epocheadset;  // create a new 'EpocHeadset' struct that we'll update with the latest data using the 'epocutils::handleEvents()' function
@@ -21,7 +22,7 @@ NAN_METHOD(Connect) {
   int eventsToHandleBeforeQuit = 500;
   int handledEvents = 0;
 
-  epocutils::initializeEpocHeadsetStruct( userID, user, bufferSizeInSample);
+  epocutils::initializeEpocHeadsetStruct( userID, pActiveActionsOut, user, bufferSizeInSample);
 
   // connection to the Epoc headset
   int epoc_conn_retval = epocutils::connect(connected); // try to connect to the Epoc headset
@@ -41,7 +42,7 @@ NAN_METHOD(Connect) {
     // Nb: if we need to update the position or parameters of stuff, we'll do so just after getting stuff from the Epoc headset
 
     // handle fresh data from the Epoc headset if it is connected
-    epocutils::handleEvents(connected, epoc_state, eEvent, eState, userID, user, hData, bufferSizeInSample); // the latest data from the Epoc headset 'll update the 'epocheadset' struct content
+    epocutils::handleEvents(connected, epoc_state, eEvent, eState, userID, pActiveActionsOut, user, hData, bufferSizeInSample); // the latest data from the Epoc headset 'll update the 'epocheadset' struct content
     // check if new data is available
 
     // std::cout << "user time: " << user.time << " UserID: " << user.userID << std::endl;

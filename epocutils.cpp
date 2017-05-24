@@ -78,7 +78,7 @@ DataHandle epocutils::createDataHandle(){
 /*  initialize the struct members */
 //void initializeEpocHeadsetStruct(unsigned int& userID, epocutils::EpocHeadset& epocheadset)
 //void initializeEpocHeadsetStruct(unsigned int& userID, epocutils::EpocHeadset_struct& epocheadset)
-void epocutils::initializeEpocHeadsetStruct(unsigned int& userID, epocutils::EpocHeadset_t& epocheadset, unsigned int bufferSizeInSample){
+void epocutils::initializeEpocHeadsetStruct(unsigned int& userID, unsigned long& pActiveActionsOut, epocutils::EpocHeadset_t& epocheadset, unsigned int bufferSizeInSample){
   // we init the bool that we'll use to know if we have unread data from the Epoc headset
   epocheadset.newDataToRead = false;
   // we initialize the EpocHeadset struct with all its member parameters to 0, except the userID wich equals the one passed as argument
@@ -117,7 +117,7 @@ void epocutils::initializeEpocHeadsetStruct(unsigned int& userID, epocutils::Epo
 
 /* handle fresh data from the Epoc headset, if connected, & update the passed 'EpocHeadset_struct' structure with that data */
 //void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHandle& eEvent, EmoStateHandle& eState, unsigned int& userID, epocutils::EpocHeadset& epocheadset)
-void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHandle& eEvent, EmoStateHandle& eState, unsigned int& userID, epocutils::EpocHeadset_t& epocheadset, DataHandle hData, unsigned int& bufferSizeInSample){
+void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHandle& eEvent, EmoStateHandle& eState, unsigned int& userID, unsigned long& pActiveActionsOut, epocutils::EpocHeadset_t& epocheadset, DataHandle hData, unsigned int& bufferSizeInSample){
   hData = EE_DataCreate();
   EE_DataSetBufferSizeInSec(1);
 
@@ -129,7 +129,31 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
       EE_EmoEngineEventGetUserId(eEvent, &userID);
       EE_DataAcquisitionEnable(userID, true);
 
-      EE_LoadUserProfile(userID, "/Users/charliegerard/Library/Application Support/Emotiv/Profiles/Charlie.emu");
+      // EE_LoadUserProfile(userID, "/Users/charliegerard/Library/Application Support/Emotiv/Profiles/Charlie.emu");
+
+      if(EE_LoadUserProfile(userID,"/Users/charliegerard/Library/Application Support/Emotiv/Profiles/Charlie.emu")==EDK_OK){
+        // std::cout << "loaded profile" << std::endl;
+
+        if(EE_CognitivGetTrainedSignatureActions(userID, &pActiveActionsOut) == EDK_OK){
+          // std::cout << "List: " << pActiveActionsOut << std::endl; //somehow returns 7 ...
+
+        }
+
+        if(EE_CognitivGetActiveActions(userID, &pActiveActionsOut) == EDK_OK){
+          // std::cout << "Active actions: " << std::endl;
+          // std::cout << &pActiveActionsOut << std::endl; // returns 0x7fff5fbfeab0 ?? address in memory... duh
+          // std::cout << pActiveActionsOut << std::endl; // returns 6...
+
+          // int test = EE_CognitivGetActiveActions(userID, &pActiveActionsOut);
+          // std::cout << test << std::endl;
+          // if(&pActiveActionsOut & 0x0001){
+          //   std::cout << "Neutral" << std::endl;
+          // }
+          epocheadset.cognitivAction = ES_CognitivGetCurrentAction(eState);
+
+          std::cout << "state: " << epocheadset.cognitivAction << std::endl;
+        }
+      }
 
       // Log the EmoState if it has been updated
       if (eventType == EE_EmoStateUpdated){
@@ -197,13 +221,24 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
       	epocheadset.engagementBoredom = ES_AffectivGetEngagementBoredomScore(eState);
 
       	// Cognitiv suite
-      	epocheadset.cognitivAction = static_cast<int>(ES_CognitivGetCurrentAction(eState));
+      	// epocheadset.cognitivAction = static_cast<int>(ES_CognitivGetCurrentAction(eState));
+      	// epocheadset.cognitivAction = ES_CognitivGetCurrentAction(eState);
 
       	epocheadset.cognitiviActionConfidence = ES_CognitivGetCurrentActionPower(eState);
 
         // Test with mental commands
-        std::map<EE_CognitivAction_t, float> mentalStates;
-        epocheadset.isPushing = mentalStates[ COG_PUSH ];
+        // std::map<EE_CognitivAction_t, float> mentalStates;
+        // epocheadset.isPushing = mentalStates[ COG_PUSH ];
+        // epocheadset.isNeutral = mentalStates[ COG_NEUTRAL ];
+
+        // if(epocheadset.cognitivAction == 0x0001){
+        //   // std::cout << "Neutral"<< std::endl;
+        // } else{
+        //   // std::cout << "Smthg else"<< std::endl;
+        // }
+        // std::cout << "Cognitiv Action: " << epocheadset.cognitivAction << std::endl;
+        // std::cout << "Neutral: " << epocheadset.isNeutral << std::endl;
+
 
 
       	epocheadset.newDataToRead = true; // we update our boolean ot indicate that data is yet to be read
