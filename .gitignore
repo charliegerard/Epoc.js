@@ -1,7 +1,3 @@
 build/
 node_modules/
-/edk.h
-/edkErrorCode.h
-/elsClient.h
-/EmoStateDLL.h
 /node.h

@@ -151,7 +151,7 @@ void epocutils::handleEvents(bool& connected, int& epoc_state, EmoEngineEventHan
           // }
           epocheadset.cognitivAction = ES_CognitivGetCurrentAction(eState);
 
-          std::cout << "state: " << epocheadset.cognitivAction << std::endl;
+          // std::cout << "state: " << epocheadset.cognitivAction << std::endl;
         }
       }
 
