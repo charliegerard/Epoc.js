@@ -1,8 +1,15 @@
-# JavaScript framework for the Emotiv EPOC [Work in progress]
+# JavaScript framework for the Emotiv EPOC [WIP]
 
 This framework provides an interface to access data from the Emotiv EPOC brain sensor using Node.js.
 
 To use this framework, you're gonna need an EPOC or EPOC+ that you can buy [here](https://emotiv.com/).
+
+## Status:
+
+* Working well with the EmoComposer but needs some changes to work with live data from the Emotiv.
+* Known issues:
+  * Cognitive Actions are not working at the moment when wearing the sensor.
+  * Need to provide a way for users to provide the path to their own user data file when launching the program.
 
 ## How to Install
 
@@ -108,7 +115,7 @@ Detect if the user is laughing:
 ---
 
 
-#### Cognitive Actions (Recently added - still need to test them)
+#### Cognitive Actions (Only working with the EmoComposer at the moment)
 
 Actions available:
 
@@ -172,7 +179,9 @@ Actions available:
 
 ## Next steps
 
-* Add Gyroscope tracking
+* Add Gyroscope tracking.
+* Get cognitive actions working.
+* Add option for Insight device.
 
 ## Special Thanks
 
@@ -181,5 +190,3 @@ Thanks to [Cam Swords](https://github.com/camswords) for his help :)
 ## License
 
 Licensed under the MIT license.
-
-*Using the [EpocUtils program](https://github.com/stephaneAG/epocutils).
