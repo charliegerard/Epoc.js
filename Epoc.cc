@@ -17,7 +17,7 @@ int state = 0;
 int epocState = 0;
 int connectionState = -1;
 
-EE_CognitivAction_t previousAction;
+IEE_MentalCommandAction_t previousAction;
 
 std::string profileNameForLoading = ""; //"/Users/<username>/Library/Application Support/Emotiv/Profiles/<filename>.emu"
 
@@ -26,8 +26,8 @@ NAN_METHOD(Connect) {
   v8::Local<v8::Function> callbackHandle = info[0].As<v8::Function>();
 
   // init code for the Epoc headset
-  EmoEngineEventHandle eEvent = EE_EmoEngineEventCreate();
-  EmoStateHandle       eState = EE_EmoStateCreate();
+  EmoStateHandle       eState = IEE_EmoStateCreate();
+  EmoEngineEventHandle eEvent = IEE_EmoEngineEventCreate();
   // DataHandle           hData = epocutils::createDataHandle();
   unsigned int         userID = 0;
   bool onStateChanged = false;
@@ -38,7 +38,7 @@ NAN_METHOD(Connect) {
   int batteryLevel = 0;
   int maxBatteryLevel = 0;
 
-  EE_SignalStrength_t wirelessStrength;
+  IEE_SignalStrength_t wirelessStrength;
 
   int connectionState = connect(connected);
 
@@ -68,7 +68,7 @@ int connect(bool connected){
 
   switch(optionChosen){
     case 1:
-      if (EE_EngineConnect() == EDK_OK){
+      if (IEE_EngineConnect() == EDK_OK){
         connected = true;
         std::cout << "Now connected to Epoc headset" << std::endl;
         return 0;
@@ -79,7 +79,7 @@ int connect(bool connected){
       break;
 
     case 2:
-      if ( EE_EngineRemoteConnect("127.0.0.1", 1726) != EDK_OK) {
+      if ( IEE_EngineRemoteConnect("127.0.0.1", 1726) != EDK_OK) {
         std::string errMsg = "epocutils:: Cannot connect to EmoComposer on [127.0.0.1]:1726";
       } else {
         std::cout << "Connected to EmoComposer" << std::endl;
@@ -98,30 +98,50 @@ int connect(bool connected){
 
 void handleEpocEvents(int& connectionState, EmoEngineEventHandle eEvent, EmoStateHandle eState, int& epocState, unsigned int userID, epocutils::EpocHeadset_t user, v8::Local<v8::Function> callbackHandle){
   if(connectionState == 0){
-    epocState = EE_EngineGetNextEvent(eEvent);
+    // epocState = IEE_EngineGetNextEvent(eEvent);
     v8::Local<v8::Object> event = Nan::New<v8::Object>();
+    // std::cout << epocState << std::endl;
+    // if(epocState == EDK_OK){
 
-    if(epocState == EDK_OK){
       if(optionChosen == 1){
         loadProfile(userID);
         showTrainedActions(userID);
 
-        EE_Event_t eventType = EE_EmoEngineEventGetType(eEvent);
-        EE_EmoEngineEventGetUserId(eEvent, &userID);
-
-        if(eventType == EE_EmoStateUpdated){
-          EE_EmoEngineEventGetEmoState(eEvent, eState);
-          handleMentalCommandsEvent(event, user, eState, eEvent);
-          handleFacialExpressionsEvents(eState, event, user, callbackHandle);
-        }
+        // IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
+        // IEE_EmoEngineEventGetUserId(eEvent, &userID);
+        //
+        // if(eventType == IEE_EmoStateUpdated){
+        //   IEE_EmoEngineEventGetEmoState(eEvent, eState);
+        //   handleMentalCommandsEvent(event, user, eState, eEvent);
+        //   handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+        // }
       } else if(optionChosen == 2){
-        EE_Event_t eventType = EE_EmoEngineEventGetType(eEvent);
-        EE_EmoEngineEventGetUserId(eEvent, &userID);
+        // IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
+        // IEE_EmoEngineEventGetUserId(eEvent, &userID);
+        //
+        // if(eventType == IEE_EmoStateUpdated){
+        //   IEE_EmoEngineEventGetEmoState(eEvent, eState);
+        //   handleMentalCommandsEvent(event, user, eState, eEvent);
+        //   handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+        // }
 
-        if(eventType == EE_EmoStateUpdated){
-          EE_EmoEngineEventGetEmoState(eEvent, eState);
-          handleMentalCommandsEvent(event, user, eState, eEvent);
-          handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+        int newEventRetrieved  = IEE_EngineGetNextEvent(eEvent);
+
+        if(newEventRetrieved == EDK_OK){
+          // std::cout << "here" << std::endl;
+          IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
+          IEE_EmoEngineEventGetUserId(eEvent, &userID);
+
+          if(eventType != IEE_UnknownEvent){
+
+            // std::cout << eventType << std::endl;
+
+            if(eventType == IEE_EmoStateUpdated){
+              IEE_EmoEngineEventGetEmoState(eEvent, eState);
+              handleMentalCommandsEvent(event, user, eState, eEvent);
+              handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+            }
+          }
         }
       }
 
@@ -129,35 +149,37 @@ void handleEpocEvents(int& connectionState, EmoEngineEventHandle eEvent, EmoStat
       parameters[0] = event;
 
       Nan::MakeCallback(Nan::GetCurrentContext()->Global(), callbackHandle, 1, parameters);
-    }
+    // }
   }
 }
 
 void handleFacialExpressionsEvents(EmoStateHandle eState, v8::Local<v8::Object> event, epocutils::EpocHeadset_t user, v8::Local<v8::Function> callbackHandle){
-  user.isBlinking = ES_ExpressivIsBlink(eState);
-  user.isWinkingLeft = ES_ExpressivIsLeftWink(eState);
-  user.isWinkingRight = ES_ExpressivIsRightWink(eState);
-  user.isLookingUp = ES_ExpressivIsLookingUp(eState);
-  user.isLookingDown = ES_ExpressivIsLookingDown(eState);
-  user.isLookingLeft = ES_ExpressivIsLookingLeft(eState);
-  user.isLookingRight = ES_ExpressivIsLookingRight(eState);
+  user.isBlinking = IS_FacialExpressionIsBlink(eState);
+  std::cout << user.isBlinking << std::endl;
+  user.isWinkingLeft = IS_FacialExpressionIsLeftWink(eState);
+  user.isWinkingRight = IS_FacialExpressionIsRightWink(eState);
+  user.isLookingUp = IS_FacialExpressionIsLookingUp(eState);
+  user.isLookingDown = IS_FacialExpressionIsLookingDown(eState);
+  // user.isLookingLeft = IS_FacialExpressionIsLookingLeft(eState);
+  // user.isLookingRight = IS_FacialExpressionIsLookingRight(eState);
 
-  std::map<EE_ExpressivAlgo_t, float> expressivStates;
-  EE_ExpressivAlgo_t upperFaceAction = ES_ExpressivGetUpperFaceAction(eState);
-  float upperFacePower = ES_ExpressivGetUpperFaceActionPower(eState);
-  EE_ExpressivAlgo_t lowerFaceAction = ES_ExpressivGetLowerFaceAction(eState);
-  float lowerFacePower = ES_ExpressivGetLowerFaceActionPower(eState);
+  std::map<IEE_FacialExpressionAlgo_t, float> expressivStates;
+  IEE_FacialExpressionAlgo_t upperFaceAction = IS_FacialExpressionGetUpperFaceAction(eState);
+  float upperFacePower = IS_FacialExpressionGetUpperFaceActionPower(eState);
+  IEE_FacialExpressionAlgo_t lowerFaceAction = IS_FacialExpressionGetLowerFaceAction(eState);
+  float lowerFacePower = IS_FacialExpressionGetLowerFaceActionPower(eState);
 
   expressivStates[ upperFaceAction ] = upperFacePower;
   expressivStates[ lowerFaceAction ] = lowerFacePower;
 
-  user.eyebrow = expressivStates[ EXP_EYEBROW ];
-  user.furrow = expressivStates[ EXP_FURROW ];
-  user.smile = expressivStates[ EXP_SMILE ];
-  user.clench = expressivStates[ EXP_CLENCH ];
-  user.smirkLeft = expressivStates[ EXP_SMIRK_LEFT ];
-  user.smirkRight = expressivStates[ EXP_SMIRK_RIGHT ];
-  user.laugh = expressivStates[ EXP_LAUGH ];
+  user.eyebrow = expressivStates[ FE_SURPRISE ];
+  user.furrow = expressivStates[ FE_HORIEYE ];
+  user.smile = expressivStates[ FE_SMILE ];
+  user.clench = expressivStates[ FE_CLENCH ];
+  user.smirkLeft = expressivStates[ FE_SMIRK_LEFT ];
+  user.smirkRight = expressivStates[ FE_SMIRK_RIGHT ];
+  user.laugh = expressivStates[ FE_LAUGH ];
+  user.frown = expressivStates[ FE_FROWN ];
 
   sendFacialExpressionsEventsToJs(event, user, callbackHandle);
 }
@@ -168,13 +190,14 @@ void sendFacialExpressionsEventsToJs(v8::Local<v8::Object> event, epocutils::Epo
   Nan::Set(event, Nan::New("winkingRight").ToLocalChecked(), Nan::New(user.isWinkingRight));
   Nan::Set(event, Nan::New("lookingUp").ToLocalChecked(), Nan::New(user.isLookingUp));
   Nan::Set(event, Nan::New("lookingDown").ToLocalChecked(), Nan::New(user.isLookingDown));
-  Nan::Set(event, Nan::New("lookingLeft").ToLocalChecked(), Nan::New(user.isLookingLeft));
-  Nan::Set(event, Nan::New("lookingRight").ToLocalChecked(), Nan::New(user.isLookingRight));
+  // Nan::Set(event, Nan::New("lookingLeft").ToLocalChecked(), Nan::New(user.isLookingLeft));
+  // Nan::Set(event, Nan::New("lookingRight").ToLocalChecked(), Nan::New(user.isLookingRight));
 
   Nan::Set(event, Nan::New("smile").ToLocalChecked(), Nan::New(user.smile));
   Nan::Set(event, Nan::New("smirkRight").ToLocalChecked(), Nan::New(user.smirkRight));
   Nan::Set(event, Nan::New("smirkLeft").ToLocalChecked(), Nan::New(user.smirkLeft));
   Nan::Set(event, Nan::New("laugh").ToLocalChecked(), Nan::New(user.laugh));
+  Nan::Set(event, Nan::New("frown").ToLocalChecked(), Nan::New(user.frown));
 
   // v8::Local<v8::Value> parameters[1];
   // parameters[0] = event;
@@ -184,16 +207,16 @@ void sendFacialExpressionsEventsToJs(v8::Local<v8::Object> event, epocutils::Epo
 
 void handleMentalCommandsEvent(v8::Local<v8::Object> event, epocutils::EpocHeadset_t user, EmoStateHandle eState, EmoEngineEventHandle eEvent){
 
-  EE_EmoEngineEventGetEmoState(eEvent, eState);
-  EE_CognitivAction_t actionType = ES_CognitivGetCurrentAction(eState);
-  float actionPower = ES_CognitivGetCurrentActionPower(eState);
+  IEE_EmoEngineEventGetEmoState(eEvent, eState);
+  IEE_MentalCommandAction_t actionType = IS_MentalCommandGetCurrentAction(eState);
+  float actionPower = IS_MentalCommandGetCurrentActionPower(eState);
 
-  if(actionType == COG_NEUTRAL){
+  if(actionType == MC_NEUTRAL){
     // std::cout << "new mental command: neutral"  << std::endl;
     // std::cout << "power: " << static_cast<int>(actionPower*100.0f)  << std::endl;
   }
 
-  if(actionType ==  COG_PUSH){
+  if(actionType ==  MC_PUSH){
     // std::cout << "new mental command: push" << std::endl;
     // std::cout << "power: " << static_cast<int>(actionPower*100.0f)  << std::endl;
   }
@@ -212,7 +235,7 @@ void handleMentalCommandsEvent(v8::Local<v8::Object> event, epocutils::EpocHeads
 
 void loadProfile(unsigned int userID)
 {
-    if (EE_LoadUserProfile(userID, profileNameForLoading.c_str()) == EDK_OK)
+    if (IEE_LoadUserProfile(userID, profileNameForLoading.c_str()) == EDK_OK)
       std::cout << "Load Profile : done" << std::endl;
 	  else
 		 std::cout << "Can't load profile." << std::endl;
@@ -221,7 +244,7 @@ void loadProfile(unsigned int userID)
 void showTrainedActions(unsigned int userID)
 {
     unsigned long pTrainedActionsOut = 0;
-    EE_CognitivGetTrainedSignatureActions(userID, &pTrainedActionsOut);
+    IEE_MentalCommandGetTrainedSignatureActions(userID, &pTrainedActionsOut);
     // std::cout << "Trained Actions: " << "\n";
 
     // pTrainedActionsOut is a bit vector.
@@ -254,25 +277,25 @@ void showTrainedActions(unsigned int userID)
 
 void showCurrentActionPower(EmoStateHandle eState)
 {
-	EE_CognitivAction_t eeAction = ES_CognitivGetCurrentAction(eState);
-	float actionPower = ES_CognitivGetCurrentActionPower(eState);
+	IEE_MentalCommandAction_t eeAction = IS_MentalCommandGetCurrentAction(eState);
+	float actionPower = IS_MentalCommandGetCurrentActionPower(eState);
 
 	switch (eeAction)
 	{
-    case COG_NEUTRAL: { std::cout << "Neutral" << " : " << actionPower << "; \n"; break; }
-    case COG_PUSH:    { std::cout << "Push" << " : " << actionPower << "; \n"; break; }
-    case COG_PULL:    { std::cout << "Pull" << " : " << actionPower << "; \n"; break; }
-    case COG_LIFT:    { std::cout << "Lift" << " : " << actionPower << "; \n"; break; }
-    case COG_DROP:    { std::cout << "Drop" << " : " << actionPower << "; \n"; break; }
-    case COG_LEFT:    { std::cout << "Left" << " : " << actionPower << "; \n"; break; }
-    case COG_RIGHT:    { std::cout << "Right" << " : " << actionPower << "; \n"; break; }
-    case COG_ROTATE_LEFT:    { std::cout << "Rotate left" << " : " << actionPower << "; \n"; break; }
-    case COG_ROTATE_RIGHT:    { std::cout << "Rotate right" << " : " << actionPower << "; \n"; break; }
-    case COG_ROTATE_CLOCKWISE:    { std::cout << "Rotate clockwise" << " : " << actionPower << "; \n"; break; }
-    case COG_ROTATE_COUNTER_CLOCKWISE:    { std::cout << "Rotate counter clockwise" << " : " << actionPower << "; \n"; break; }
-    case COG_ROTATE_FORWARDS:    { std::cout << "Rotate forwards" << " : " << actionPower << "; \n"; break; }
-    case COG_ROTATE_REVERSE:    { std::cout << "Rotate reverse" << " : " << actionPower << "; \n"; break; }
-    case COG_DISAPPEAR:    { std::cout << "Disappear" << " : " << actionPower << "; \n"; break; }
+    case MC_NEUTRAL: { std::cout << "Neutral" << " : " << actionPower << "; \n"; break; }
+    case MC_PUSH:    { std::cout << "Push" << " : " << actionPower << "; \n"; break; }
+    case MC_PULL:    { std::cout << "Pull" << " : " << actionPower << "; \n"; break; }
+    case MC_LIFT:    { std::cout << "Lift" << " : " << actionPower << "; \n"; break; }
+    case MC_DROP:    { std::cout << "Drop" << " : " << actionPower << "; \n"; break; }
+    case MC_LEFT:    { std::cout << "Left" << " : " << actionPower << "; \n"; break; }
+    case MC_RIGHT:    { std::cout << "Right" << " : " << actionPower << "; \n"; break; }
+    case MC_ROTATE_LEFT:    { std::cout << "Rotate left" << " : " << actionPower << "; \n"; break; }
+    case MC_ROTATE_RIGHT:    { std::cout << "Rotate right" << " : " << actionPower << "; \n"; break; }
+    case MC_ROTATE_CLOCKWISE:    { std::cout << "Rotate clockwise" << " : " << actionPower << "; \n"; break; }
+    case MC_ROTATE_COUNTER_CLOCKWISE:    { std::cout << "Rotate counter clockwise" << " : " << actionPower << "; \n"; break; }
+    case MC_ROTATE_FORWARDS:    { std::cout << "Rotate forwards" << " : " << actionPower << "; \n"; break; }
+    case MC_ROTATE_REVERSE:    { std::cout << "Rotate reverse" << " : " << actionPower << "; \n"; break; }
+    case MC_DISAPPEAR:    { std::cout << "Disappear" << " : " << actionPower << "; \n"; break; }
 	}
 }
 

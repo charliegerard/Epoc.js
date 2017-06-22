@@ -6,12 +6,15 @@ To use this framework, you're gonna need an EPOC or EPOC+ that you can buy [here
 
 ## Status:
 
-* Working well with the EmoComposer but needs some changes to work with live data from the Emotiv.
+* **Issues testing with EmoComposer – Currently refactoring to use the latest version of the SDK.**
+
 * Known issues:
   * Cognitive Actions are not working at the moment when wearing the sensor.
   * Need to provide a way for users to provide the path to their own user data file when launching the program.
 
 ## How to Install
+
+If you haven't already downloaded the SDK, clone or download [this repo](https://github.com/Emotiv/community-sdk) and copy the `edk.framework` to `/Library/Frameworks` (on Mac).
 
 In your terminal, run:
 
