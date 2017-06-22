@@ -124,28 +124,26 @@ void handleEpocEvents(int& connectionState, EmoEngineEventHandle eEvent, EmoStat
         //   handleMentalCommandsEvent(event, user, eState, eEvent);
         //   handleFacialExpressionsEvents(eState, event, user, callbackHandle);
         // }
-      }
 
-      int newEventRetrieved  = IEE_EngineGetNextEvent(eEvent);
-      // std::cout << newEventRetrieved << std::endl;
+        int newEventRetrieved  = IEE_EngineGetNextEvent(eEvent);
 
-      if(newEventRetrieved == EDK_OK){
-        std::cout << "here" << std::endl;
-        IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
-        IEE_EmoEngineEventGetUserId(eEvent, &userID);
+        if(newEventRetrieved == EDK_OK){
+          std::cout << "here" << std::endl;
+          IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
+          IEE_EmoEngineEventGetUserId(eEvent, &userID);
 
-        if(eventType != IEE_UnknownEvent){
+          if(eventType != IEE_UnknownEvent){
 
-          std::cout << eventType << std::endl;
+            std::cout << eventType << std::endl;
 
-          if(eventType == IEE_EmoStateUpdated){
-            IEE_EmoEngineEventGetEmoState(eEvent, eState);
-            handleMentalCommandsEvent(event, user, eState, eEvent);
-            handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+            if(eventType == IEE_EmoStateUpdated){
+              IEE_EmoEngineEventGetEmoState(eEvent, eState);
+              handleMentalCommandsEvent(event, user, eState, eEvent);
+              handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+            }
           }
         }
       }
-
 
       v8::Local<v8::Value> parameters[1];
       parameters[0] = event;

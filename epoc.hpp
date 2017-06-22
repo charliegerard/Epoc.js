@@ -7,7 +7,7 @@
 #include "lib/IedkErrorCode.h"
 #include "lib/IEegData.h"
 #include "lib/IEmoStatePerformanceMetric.h"
-#include "lib/IEmotivProfile.h"
+// #include "lib/IEmotivProfile.h"
 
 #ifndef epocutils_h
 #define epocutils_h
