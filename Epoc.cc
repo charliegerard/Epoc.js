@@ -128,13 +128,13 @@ void handleEpocEvents(int& connectionState, EmoEngineEventHandle eEvent, EmoStat
         int newEventRetrieved  = IEE_EngineGetNextEvent(eEvent);
 
         if(newEventRetrieved == EDK_OK){
-          std::cout << "here" << std::endl;
+          // std::cout << "here" << std::endl;
           IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
           IEE_EmoEngineEventGetUserId(eEvent, &userID);
 
           if(eventType != IEE_UnknownEvent){
 
-            std::cout << eventType << std::endl;
+            // std::cout << eventType << std::endl;
 
             if(eventType == IEE_EmoStateUpdated){
               IEE_EmoEngineEventGetEmoState(eEvent, eState);
@@ -160,8 +160,8 @@ void handleFacialExpressionsEvents(EmoStateHandle eState, v8::Local<v8::Object> 
   user.isWinkingRight = IS_FacialExpressionIsRightWink(eState);
   user.isLookingUp = IS_FacialExpressionIsLookingUp(eState);
   user.isLookingDown = IS_FacialExpressionIsLookingDown(eState);
-  user.isLookingLeft = IS_FacialExpressionIsLookingLeft(eState);
-  user.isLookingRight = IS_FacialExpressionIsLookingRight(eState);
+  // user.isLookingLeft = IS_FacialExpressionIsLookingLeft(eState);
+  // user.isLookingRight = IS_FacialExpressionIsLookingRight(eState);
 
   std::map<IEE_FacialExpressionAlgo_t, float> expressivStates;
   IEE_FacialExpressionAlgo_t upperFaceAction = IS_FacialExpressionGetUpperFaceAction(eState);
@@ -190,8 +190,8 @@ void sendFacialExpressionsEventsToJs(v8::Local<v8::Object> event, epocutils::Epo
   Nan::Set(event, Nan::New("winkingRight").ToLocalChecked(), Nan::New(user.isWinkingRight));
   Nan::Set(event, Nan::New("lookingUp").ToLocalChecked(), Nan::New(user.isLookingUp));
   Nan::Set(event, Nan::New("lookingDown").ToLocalChecked(), Nan::New(user.isLookingDown));
-  Nan::Set(event, Nan::New("lookingLeft").ToLocalChecked(), Nan::New(user.isLookingLeft));
-  Nan::Set(event, Nan::New("lookingRight").ToLocalChecked(), Nan::New(user.isLookingRight));
+  // Nan::Set(event, Nan::New("lookingLeft").ToLocalChecked(), Nan::New(user.isLookingLeft));
+  // Nan::Set(event, Nan::New("lookingRight").ToLocalChecked(), Nan::New(user.isLookingRight));
 
   Nan::Set(event, Nan::New("smile").ToLocalChecked(), Nan::New(user.smile));
   Nan::Set(event, Nan::New("smirkRight").ToLocalChecked(), Nan::New(user.smirkRight));

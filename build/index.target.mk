@@ -156,7 +156,7 @@ LIBTOOLFLAGS_Release := \
 	-Wl,-search_paths_first
 
 LIBS := \
-	/Library/Frameworks/edk.framework/edk
+	-ledk
 
 $(builddir)/index.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
 $(builddir)/index.node: LIBS := $(LIBS)
