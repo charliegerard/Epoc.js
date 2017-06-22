@@ -2,10 +2,12 @@
 #include <map>
 
 /* include the Emotiv files from the SDK */
-#include "lib/edk.h"
-#include "lib/edkErrorCode.h"
-#include "lib/EmoStateDLL.h"
-#include "lib/EmotivProfile.h"
+#include "lib/IEmoStateDLL.h"
+#include "lib/Iedk.h"
+#include "lib/IedkErrorCode.h"
+#include "lib/IEegData.h"
+#include "lib/IEmoStatePerformanceMetric.h"
+#include "lib/IEmotivProfile.h"
 
 #ifndef epocutils_h
 #define epocutils_h
@@ -40,6 +42,7 @@ namespace epocutils
     float smirkLeft;
     float smirkRight;
     float laugh;
+    float frown;
 
     // Affectiv suite
     float shortTermExcitement;

@@ -13,6 +13,8 @@ To use this framework, you're gonna need an EPOC or EPOC+ that you can buy [here
 
 ## How to Install
 
+If you haven't already downloaded the SDK, clone or download [this repo](https://github.com/Emotiv/community-sdk) and copy the `edk.framework` to `/Library/Frameworks` (on Mac).
+
 In your terminal, run:
 
 ```
