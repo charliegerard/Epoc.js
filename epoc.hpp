@@ -2,12 +2,12 @@
 #include <map>
 
 /* include the Emotiv files from the SDK */
-#include "lib/IEmoStateDLL.h"
-#include "lib/Iedk.h"
-#include "lib/IedkErrorCode.h"
-#include "lib/IEegData.h"
-#include "lib/IEmoStatePerformanceMetric.h"
-#include "lib/FacialExpressionDetection.h"
+#include "IEmoStateDLL.h"
+#include "Iedk.h"
+#include "IedkErrorCode.h"
+#include "IEegData.h"
+#include "IEmoStatePerformanceMetric.h"
+#include "FacialExpressionDetection.h"
 // #include "lib/IEmotivProfile.h"
 
 #ifndef epocutils_h

@@ -32,7 +32,6 @@ NAN_METHOD(Connect) {
   unsigned int         userID = 0;
   bool onStateChanged = false;
   bool                 connected = false;
-  //epocutils::EpocHeadset         epocheadset;  // create a new 'EpocHeadset' struct that we'll update with the latest data using the 'epocutils::handleEvents()' function
   epocutils::EpocHeadset_t user;
 
   int batteryLevel = 0;
@@ -98,49 +97,32 @@ int connect(bool connected){
 
 void handleEpocEvents(int& connectionState, EmoEngineEventHandle eEvent, EmoStateHandle eState, int& epocState, unsigned int userID, epocutils::EpocHeadset_t user, v8::Local<v8::Function> callbackHandle){
   if(connectionState == 0){
-    // epocState = IEE_EngineGetNextEvent(eEvent);
+    epocState = IEE_EngineGetNextEvent(eEvent);
     v8::Local<v8::Object> event = Nan::New<v8::Object>();
-    // std::cout << epocState << std::endl;
-    // if(epocState == EDK_OK){
+
+    if(epocState == EDK_OK){
 
       if(optionChosen == 1){
         loadProfile(userID);
         showTrainedActions(userID);
 
-        // IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
-        // IEE_EmoEngineEventGetUserId(eEvent, &userID);
-        //
-        // if(eventType == IEE_EmoStateUpdated){
-        //   IEE_EmoEngineEventGetEmoState(eEvent, eState);
-        //   handleMentalCommandsEvent(event, user, eState, eEvent);
-        //   handleFacialExpressionsEvents(eState, event, user, callbackHandle);
-        // }
+        IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
+        IEE_EmoEngineEventGetUserId(eEvent, &userID);
+
+        if(eventType == IEE_EmoStateUpdated){
+          IEE_EmoEngineEventGetEmoState(eEvent, eState);
+          handleMentalCommandsEvent(event, user, eState, eEvent);
+          handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+        }
       } else if(optionChosen == 2){
-        // IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
-        // IEE_EmoEngineEventGetUserId(eEvent, &userID);
-        //
-        // if(eventType == IEE_EmoStateUpdated){
-        //   IEE_EmoEngineEventGetEmoState(eEvent, eState);
-        //   handleMentalCommandsEvent(event, user, eState, eEvent);
-        //   handleFacialExpressionsEvents(eState, event, user, callbackHandle);
-        // }
+        IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
+        IEE_EmoEngineEventGetUserId(eEvent, &userID);
 
-        int newEventRetrieved  = IEE_EngineGetNextEvent(eEvent);
-
-        if(newEventRetrieved == EDK_OK){
-          // std::cout << "here" << std::endl;
-          IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
-          IEE_EmoEngineEventGetUserId(eEvent, &userID);
-
-          if(eventType != IEE_UnknownEvent){
-
-            // std::cout << eventType << std::endl;
-
-            if(eventType == IEE_EmoStateUpdated){
-              IEE_EmoEngineEventGetEmoState(eEvent, eState);
-              handleMentalCommandsEvent(event, user, eState, eEvent);
-              handleFacialExpressionsEvents(eState, event, user, callbackHandle);
-            }
+        if(eventType != IEE_UnknownEvent){
+          if(eventType == IEE_EmoStateUpdated){
+            IEE_EmoEngineEventGetEmoState(eEvent, eState);
+            handleMentalCommandsEvent(event, user, eState, eEvent);
+            handleFacialExpressionsEvents(eState, event, user, callbackHandle);
           }
         }
       }
@@ -149,19 +131,18 @@ void handleEpocEvents(int& connectionState, EmoEngineEventHandle eEvent, EmoStat
       parameters[0] = event;
 
       Nan::MakeCallback(Nan::GetCurrentContext()->Global(), callbackHandle, 1, parameters);
-    // }
+    }
   }
 }
 
 void handleFacialExpressionsEvents(EmoStateHandle eState, v8::Local<v8::Object> event, epocutils::EpocHeadset_t user, v8::Local<v8::Function> callbackHandle){
   user.isBlinking = IS_FacialExpressionIsBlink(eState);
-  std::cout << user.isBlinking << std::endl;
   user.isWinkingLeft = IS_FacialExpressionIsLeftWink(eState);
   user.isWinkingRight = IS_FacialExpressionIsRightWink(eState);
   user.isLookingUp = IS_FacialExpressionIsLookingUp(eState);
   user.isLookingDown = IS_FacialExpressionIsLookingDown(eState);
-  // user.isLookingLeft = IS_FacialExpressionIsLookingLeft(eState);
-  // user.isLookingRight = IS_FacialExpressionIsLookingRight(eState);
+  user.isLookingLeft = IS_FacialExpressionIsLookingLeft(eState);
+  user.isLookingRight = IS_FacialExpressionIsLookingRight(eState);
 
   std::map<IEE_FacialExpressionAlgo_t, float> expressivStates;
   IEE_FacialExpressionAlgo_t upperFaceAction = IS_FacialExpressionGetUpperFaceAction(eState);
@@ -190,8 +171,8 @@ void sendFacialExpressionsEventsToJs(v8::Local<v8::Object> event, epocutils::Epo
   Nan::Set(event, Nan::New("winkingRight").ToLocalChecked(), Nan::New(user.isWinkingRight));
   Nan::Set(event, Nan::New("lookingUp").ToLocalChecked(), Nan::New(user.isLookingUp));
   Nan::Set(event, Nan::New("lookingDown").ToLocalChecked(), Nan::New(user.isLookingDown));
-  // Nan::Set(event, Nan::New("lookingLeft").ToLocalChecked(), Nan::New(user.isLookingLeft));
-  // Nan::Set(event, Nan::New("lookingRight").ToLocalChecked(), Nan::New(user.isLookingRight));
+  Nan::Set(event, Nan::New("lookingLeft").ToLocalChecked(), Nan::New(user.isLookingLeft));
+  Nan::Set(event, Nan::New("lookingRight").ToLocalChecked(), Nan::New(user.isLookingRight));
 
   Nan::Set(event, Nan::New("smile").ToLocalChecked(), Nan::New(user.smile));
   Nan::Set(event, Nan::New("smirkRight").ToLocalChecked(), Nan::New(user.smirkRight));

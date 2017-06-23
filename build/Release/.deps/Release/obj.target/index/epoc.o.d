@@ -1,4 +1,4 @@
-cmd_Release/obj.target/index/epoc.o := c++ '-DNODE_GYP_MODULE_NAME=index' '-DUSING_UV_SHARED=1' '-DUSING_V8_SHARED=1' '-DV8_DEPRECATION_WARNINGS=1' '-D_DARWIN_USE_64_BIT_INODE=1' '-D_LARGEFILE_SOURCE' '-D_FILE_OFFSET_BITS=64' '-DBUILDING_NODE_EXTENSION' -I/Users/charliegerard/.node-gyp/6.10.2/include/node -I/Users/charliegerard/.node-gyp/6.10.2/src -I/Users/charliegerard/.node-gyp/6.10.2/deps/uv/include -I/Users/charliegerard/.node-gyp/6.10.2/deps/v8/include -I../node_modules/nan  -Os -gdwarf-2 -mmacosx-version-min=10.7 -arch x86_64 -Wall -Wendif-labels -W -Wno-unused-parameter -std=gnu++0x -fno-rtti -fno-exceptions -fno-threadsafe-statics -fno-strict-aliasing -ObjC++ -MMD -MF ./Release/.deps/Release/obj.target/index/epoc.o.d.raw   -c -o Release/obj.target/index/epoc.o ../epoc.cc
+cmd_Release/obj.target/index/epoc.o := c++ '-DNODE_GYP_MODULE_NAME=index' '-DUSING_UV_SHARED=1' '-DUSING_V8_SHARED=1' '-DV8_DEPRECATION_WARNINGS=1' '-D_DARWIN_USE_64_BIT_INODE=1' '-D_LARGEFILE_SOURCE' '-D_FILE_OFFSET_BITS=64' '-DBUILDING_NODE_EXTENSION' -I/Users/charliegerard/.node-gyp/6.10.2/include/node -I/Users/charliegerard/.node-gyp/6.10.2/src -I/Users/charliegerard/.node-gyp/6.10.2/deps/uv/include -I/Users/charliegerard/.node-gyp/6.10.2/deps/v8/include -I../node_modules/nan -I../lib/includes  -Os -gdwarf-2 -mmacosx-version-min=10.7 -arch x86_64 -Wall -Wendif-labels -W -Wno-unused-parameter -std=gnu++0x -fno-rtti -fno-exceptions -fno-threadsafe-statics -fno-strict-aliasing -ObjC++ -MMD -MF ./Release/.deps/Release/obj.target/index/epoc.o.d.raw   -c -o Release/obj.target/index/epoc.o ../epoc.cc
 Release/obj.target/index/epoc.o: ../epoc.cc ../node_modules/nan/nan.h \
   /Users/charliegerard/.node-gyp/6.10.2/include/node/node_version.h \
   /Users/charliegerard/.node-gyp/6.10.2/include/node/uv.h \
@@ -25,10 +25,13 @@ Release/obj.target/index/epoc.o: ../epoc.cc ../node_modules/nan/nan.h \
   ../node_modules/nan/nan_weak.h ../node_modules/nan/nan_object_wrap.h \
   ../node_modules/nan/nan_private.h \
   ../node_modules/nan/nan_typedarray_contents.h ../epoc.hpp \
-  ../lib/IEmoStateDLL.h ../lib/Iedk.h ../lib/IedkErrorCode.h \
-  ../lib/FacialExpressionDetection.h ../lib/MentalCommandDetection.h \
-  ../lib/IEmotivProfile.h ../lib/EmotivLicense.h ../lib/IEegData.h \
-  ../lib/IEmoStatePerformanceMetric.h
+  ../lib/includes/IEmoStateDLL.h ../lib/includes/Iedk.h \
+  ../lib/includes/IedkErrorCode.h \
+  ../lib/includes/FacialExpressionDetection.h \
+  ../lib/includes/MentalCommandDetection.h \
+  ../lib/includes/IEmotivProfile.h ../lib/includes/EmotivLicense.h \
+  ../lib/includes/IEegData.h \
+  ../lib/includes/IEmoStatePerformanceMetric.h
 ../epoc.cc:
 ../node_modules/nan/nan.h:
 /Users/charliegerard/.node-gyp/6.10.2/include/node/node_version.h:
@@ -58,12 +61,12 @@ Release/obj.target/index/epoc.o: ../epoc.cc ../node_modules/nan/nan.h \
 ../node_modules/nan/nan_private.h:
 ../node_modules/nan/nan_typedarray_contents.h:
 ../epoc.hpp:
-../lib/IEmoStateDLL.h:
-../lib/Iedk.h:
-../lib/IedkErrorCode.h:
-../lib/FacialExpressionDetection.h:
-../lib/MentalCommandDetection.h:
-../lib/IEmotivProfile.h:
-../lib/EmotivLicense.h:
-../lib/IEegData.h:
-../lib/IEmoStatePerformanceMetric.h:
+../lib/includes/IEmoStateDLL.h:
+../lib/includes/Iedk.h:
+../lib/includes/IedkErrorCode.h:
+../lib/includes/FacialExpressionDetection.h:
+../lib/includes/MentalCommandDetection.h:
+../lib/includes/IEmotivProfile.h:
+../lib/includes/EmotivLicense.h:
+../lib/includes/IEegData.h:
+../lib/includes/IEmoStatePerformanceMetric.h:

@@ -50,7 +50,8 @@ INCS_Debug := \
 	-I/Users/charliegerard/.node-gyp/6.10.2/src \
 	-I/Users/charliegerard/.node-gyp/6.10.2/deps/uv/include \
 	-I/Users/charliegerard/.node-gyp/6.10.2/deps/v8/include \
-	-I$(srcdir)/node_modules/nan
+	-I$(srcdir)/node_modules/nan \
+	-I$(srcdir)/lib/includes
 
 DEFS_Release := \
 	'-DNODE_GYP_MODULE_NAME=index' \
@@ -98,7 +99,8 @@ INCS_Release := \
 	-I/Users/charliegerard/.node-gyp/6.10.2/src \
 	-I/Users/charliegerard/.node-gyp/6.10.2/deps/uv/include \
 	-I/Users/charliegerard/.node-gyp/6.10.2/deps/v8/include \
-	-I$(srcdir)/node_modules/nan
+	-I$(srcdir)/node_modules/nan \
+	-I$(srcdir)/lib/includes
 
 OBJS := \
 	$(obj).target/$(TARGET)/epoc.o
@@ -156,7 +158,8 @@ LIBTOOLFLAGS_Release := \
 	-Wl,-search_paths_first
 
 LIBS := \
-	-ledk
+	../lib/libedk.1.0.0.dylib \
+	/Library/Frameworks/edk.framework/edk
 
 $(builddir)/index.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
 $(builddir)/index.node: LIBS := $(LIBS)
