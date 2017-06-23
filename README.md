@@ -6,7 +6,7 @@ To use this framework, you're gonna need an EPOC or EPOC+ that you can buy [here
 
 ## Status:
 
-* ** Refactored to use latest SDK – Working with EmoComposer but still need to test while wearing the sensor. **
+* **Refactored to use latest SDK – Working with EmoComposer but still need to test while wearing the sensor.**
 
 * Known issues:
   * Cognitive Actions are not working at the moment when wearing the sensor.
