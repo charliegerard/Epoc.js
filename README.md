@@ -4,6 +4,8 @@ This framework provides an interface to access data from the Emotiv EPOC brain s
 
 To use this framework, you're gonna need an EPOC or EPOC+ that you can buy [here](https://emotiv.com/).
 
+Originally based on the [epocutils library](http://stephaneag.github.io/epocutils/) by [@StephaneAG](https://github.com/stephaneAG)
+
 ## Status:
 
 * **Refactored to use latest SDK – Working with EmoComposer but still need to test while wearing the sensor.**
@@ -184,7 +186,6 @@ Actions available:
 
 * Add Gyroscope tracking.
 * Get cognitive actions working.
-* Add option for Insight device.
 
 ## Special Thanks
 

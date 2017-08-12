@@ -69,10 +69,10 @@ int connect(bool connected){
     case 1:
       if (IEE_EngineConnect() == EDK_OK){
         connected = true;
-        std::cout << "Now connected to Epoc headset" << std::endl;
+        std::cout << "Now connected to Epoc / Insight headset" << std::endl;
         return 0;
       } else {
-        std::cout << "Could not connect to Epoc headset" << std::endl;
+        std::cout << "Could not connect to Epoc / Insight headset" << std::endl;
         return -1;
       }
       break;
