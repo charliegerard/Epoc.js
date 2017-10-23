@@ -21,7 +21,7 @@ IEE_MentalCommandAction_t previousAction;
 
 std::string profileNameForLoading = ""; //"/Users/<username>/Library/Application Support/Emotiv/Profiles/<filename>.emu"
 
-NAN_METHOD(Connect) {
+void Connect(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
   v8::Local<v8::Function> callbackHandle = info[0].As<v8::Function>();
 
@@ -280,14 +280,11 @@ void showCurrentActionPower(EmoStateHandle eState)
 	}
 }
 
+using namespace v8;
 
-NAN_METHOD(Connect);
-
-using v8::FunctionTemplate;
-
-NAN_MODULE_INIT(InitAll) {
-  Nan::Set(target, Nan::New("connect").ToLocalChecked(),
-    Nan::GetFunction(Nan::New<FunctionTemplate>(Connect)).ToLocalChecked());
+void Init(v8::Local<v8::Object> exports) {
+  exports->Set(Nan::New("connect").ToLocalChecked(),
+               Nan::New<v8::FunctionTemplate>(Connect)->GetFunction());
 }
 
-NODE_MODULE(NativeExtension, InitAll)
+NODE_MODULE(connect, Init)
