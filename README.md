@@ -119,6 +119,22 @@ Detect if the user is laughing:
 
 ---
 
+#### Gyroscope
+
+Detect changes in gyroscope data:
+
+```
+  if(event.gyroX){
+    // do something
+  }
+
+  if(event.gyroX){
+    // do something
+  }
+```
+
+---
+
 
 #### Cognitive Actions (Only working with the EmoComposer at the moment)
 
@@ -184,7 +200,6 @@ Actions available:
 
 ## Next steps
 
-* Add Gyroscope tracking.
 * Get cognitive actions working.
 
 ## Special Thanks

@@ -77,6 +77,16 @@ Epoc.connect(function(event) {
 				break;
 		}
 	}
+
+	if(event.gyroX){
+		console.log("gyroX: ", event.gyroX);
+	}
+
+	if(event.gyroY){
+		console.log("gyroY: ", event.gyroY);
+	}
+
+
 	// at the moment will only handle 1 event at a time. Need to fix that
 	if(pastAction !== action){
 		console.log('action', action)

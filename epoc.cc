@@ -1,6 +1,10 @@
 #include <nan.h>
 #include "epoc.hpp"
 
+#include <node.h>
+#include <v8.h>
+#include <iostream>
+
 void handleFacialExpressionEvent(std::ostream& , EmoEngineEventHandle );
 void loadProfile(unsigned int userID);
 void showTrainedActions(unsigned int userID);
@@ -12,10 +16,20 @@ void handleFacialExpressionsEvents(EmoStateHandle, v8::Local<v8::Object>, epocut
 void sendFacialExpressionsEventsToJs(v8::Local<v8::Object>, epocutils::EpocHeadset_t, v8::Local<v8::Function> callbackHandle);
 void handleMentalCommandsEvent(v8::Local<v8::Object>, epocutils::EpocHeadset_t, EmoStateHandle, EmoEngineEventHandle);
 
+void getGyroData(v8::Local<v8::Object> event, unsigned int userID);
+void sendGyroDataToJs(v8::Local<v8::Object> event, int xPos, int yPos);
+
 int optionChosen;
 int state = 0;
 int epocState = 0;
 int connectionState = -1;
+
+bool profileLoaded = false;
+
+int gyroX = 0;
+int gyroY = 0;
+int xmax = 0;
+int ymax = 0;
 
 IEE_MentalCommandAction_t previousAction;
 
@@ -103,28 +117,41 @@ void handleEpocEvents(int& connectionState, EmoEngineEventHandle eEvent, EmoStat
     if(epocState == EDK_OK){
 
       if(optionChosen == 1){
-        loadProfile(userID);
-        showTrainedActions(userID);
-
-        IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
-        IEE_EmoEngineEventGetUserId(eEvent, &userID);
-
-        if(eventType == IEE_EmoStateUpdated){
-          IEE_EmoEngineEventGetEmoState(eEvent, eState);
-          handleMentalCommandsEvent(event, user, eState, eEvent);
-          handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+        if(!profileLoaded){
+          loadProfile(userID);
+          showTrainedActions(userID);
         }
+
+
+        // IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
+        // IEE_EmoEngineEventGetUserId(eEvent, &userID);
+        //
+        // if(eventType == IEE_EmoStateUpdated){
+        //   IEE_EmoEngineEventGetEmoState(eEvent, eState);
+        //   handleMentalCommandsEvent(event, user, eState, eEvent);
+        //   handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+        // }
       } else if(optionChosen == 2){
-        IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
-        IEE_EmoEngineEventGetUserId(eEvent, &userID);
+        // IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
+        // IEE_EmoEngineEventGetUserId(eEvent, &userID);
+        //
+        // if(eventType != IEE_UnknownEvent){
+        //   if(eventType == IEE_EmoStateUpdated){
+        //     IEE_EmoEngineEventGetEmoState(eEvent, eState);
+        //     handleMentalCommandsEvent(event, user, eState, eEvent);
+        //     handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+        //   }
+        // }
+      }
 
-        if(eventType != IEE_UnknownEvent){
-          if(eventType == IEE_EmoStateUpdated){
-            IEE_EmoEngineEventGetEmoState(eEvent, eState);
-            handleMentalCommandsEvent(event, user, eState, eEvent);
-            handleFacialExpressionsEvents(eState, event, user, callbackHandle);
-          }
-        }
+      IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
+      IEE_EmoEngineEventGetUserId(eEvent, &userID);
+
+      if(eventType == IEE_EmoStateUpdated){
+        getGyroData(event, 0);
+        IEE_EmoEngineEventGetEmoState(eEvent, eState);
+        handleMentalCommandsEvent(event, user, eState, eEvent);
+        handleFacialExpressionsEvents(eState, event, user, callbackHandle);
       }
 
       v8::Local<v8::Value> parameters[1];
@@ -133,6 +160,15 @@ void handleEpocEvents(int& connectionState, EmoEngineEventHandle eEvent, EmoStat
       Nan::MakeCallback(Nan::GetCurrentContext()->Global(), callbackHandle, 1, parameters);
     }
   }
+}
+
+void getGyroData(v8::Local<v8::Object> event, unsigned int userID){
+  IEE_HeadsetGetGyroDelta(userID, &gyroX, &gyroY);
+
+  xmax += gyroX;
+  ymax += gyroY;
+
+  sendGyroDataToJs(event, xmax, ymax);
 }
 
 void handleFacialExpressionsEvents(EmoStateHandle eState, v8::Local<v8::Object> event, epocutils::EpocHeadset_t user, v8::Local<v8::Function> callbackHandle){
@@ -186,6 +222,11 @@ void sendFacialExpressionsEventsToJs(v8::Local<v8::Object> event, epocutils::Epo
   // Nan::MakeCallback(Nan::GetCurrentContext()->Global(), callbackHandle, 1, parameters);
 }
 
+void sendGyroDataToJs(v8::Local<v8::Object> event, int xPos, int yPos){
+  Nan::Set(event, Nan::New("gyroX").ToLocalChecked(), Nan::New(xPos));
+  Nan::Set(event, Nan::New("gyroY").ToLocalChecked(), Nan::New(yPos));
+}
+
 void handleMentalCommandsEvent(v8::Local<v8::Object> event, epocutils::EpocHeadset_t user, EmoStateHandle eState, EmoEngineEventHandle eEvent){
 
   IEE_EmoEngineEventGetEmoState(eEvent, eState);
@@ -216,10 +257,13 @@ void handleMentalCommandsEvent(v8::Local<v8::Object> event, epocutils::EpocHeads
 
 void loadProfile(unsigned int userID)
 {
-    if (IEE_LoadUserProfile(userID, profileNameForLoading.c_str()) == EDK_OK)
+    if (IEE_LoadUserProfile(userID, profileNameForLoading.c_str()) == EDK_OK){
       std::cout << "Load Profile : done" << std::endl;
-	  else
+      profileLoaded = true;
+	  } else {
 		 std::cout << "Can't load profile." << std::endl;
+     profileLoaded = false;
+   }
 }
 
 void showTrainedActions(unsigned int userID)
@@ -287,4 +331,4 @@ void Init(v8::Local<v8::Object> exports) {
                Nan::New<v8::FunctionTemplate>(Connect)->GetFunction());
 }
 
-NODE_MODULE(connect, Init)
+NODE_MODULE(index, Init)
