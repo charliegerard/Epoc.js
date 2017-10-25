@@ -1,0 +1,111 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/charliegerard/.nvm/versions/node/v6.10.2/bin/node',
+1 verbose cli   '/Users/charliegerard/.nvm/versions/node/v6.10.2/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@3.10.10
+3 info using node@v6.10.2
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/charliegerard/Projects/Personal_Projects/Personal-projects-github/emotivjs',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/charliegerard/.npm/epocjs/2.1.1/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/charliegerard/.npm correctMkdir not in flight; initializing
+10 info lifecycle epocjs@2.1.1~prepublish: epocjs@2.1.1
+11 silly lifecycle epocjs@2.1.1~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/charliegerard/.npm/epocjs/2.1.1/package.tgz',
+12 verbose tar pack   '/Users/charliegerard/Projects/Personal_Projects/Personal-projects-github/emotivjs' ]
+13 verbose tarball /Users/charliegerard/.npm/epocjs/2.1.1/package.tgz
+14 verbose folder /Users/charliegerard/Projects/Personal_Projects/Personal-projects-github/emotivjs
+15 verbose addLocalTarball adding from inside cache /Users/charliegerard/.npm/epocjs/2.1.1/package.tgz
+16 verbose correctMkdir /Users/charliegerard/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd epocjs@2.1.1
+18 verbose afterAdd /Users/charliegerard/.npm/epocjs/2.1.1/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/charliegerard/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/charliegerard/.npm/epocjs/2.1.1/package/package.json written
+21 silly publish { name: 'epocjs',
+21 silly publish   version: '2.1.1',
+21 silly publish   description: 'Node.js Addon for the Emotiv EPOC headset',
+21 silly publish   author: { name: 'Charlie Gerard', email: 'charlie.a.gerard@gmail.com' },
+21 silly publish   'git repository': 'https://github.com/charliegerard/Epoc.js',
+21 silly publish   keywords: [ 'node.js', 'nodejs', 'emotiv', 'epoc' ],
+21 silly publish   license: 'MIT License',
+21 silly publish   main: 'src/index.js',
+21 silly publish   gypfile: true,
+21 silly publish   dependencies:
+21 silly publish    { bindings: '~1.2.1',
+21 silly publish      nan: '*',
+21 silly publish      'node-gyp': '^3.6.2',
+21 silly publish      underscore: '^1.8.3' },
+21 silly publish   scripts: { install: 'node-gyp rebuild' },
+21 silly publish   readme: '# JavaScript framework for the Emotiv EPOC [WIP]\n\nThis framework provides an interface to access data from the Emotiv EPOC brain sensor using Node.js.\n\nTo use this framework, you\'re gonna need an EPOC or EPOC+ that you can buy [here](https://emotiv.com/).\n\nOriginally based on the [epocutils library](http://stephaneag.github.io/epocutils/) by [@StephaneAG](https://github.com/stephaneAG)\n\n## Status:\n\n* **Refactored to use latest SDK – Working with EmoComposer but still need to test while wearing the sensor.**\n\n* Known issues:\n  * Cognitive Actions are not working at the moment when wearing the sensor.\n  * Need to provide a way for users to provide the path to their own user data file when launching the program.\n\n## How to Install\n\nIf you haven\'t already downloaded the SDK, clone or download [this repo](https://github.com/Emotiv/community-sdk) and copy the `edk.framework` to `/Library/Frameworks` (on Mac).\n\nIn your terminal, run:\n\n```\n  npm install epocjs\n```\n\n\n## How to Use\n\nExample of simple program:\n\n```\n  var Epoc = require(\'epocjs\')();\n\n  Epoc.connect(function(event){\n    if(event.smile > 0){\n      console.log(\'smiling\')\n    }\n  })\n```\n\n## Events\n\n---\n\n#### Smile\n\nIf the value is superior to 0, the headset is detecting that the user is smiling.\n\n```\n  if(event.smile > 0){\n    // do something\n  }\n```\n\n---\n\n#### Looking Up / Down / Left / Right\n\nThe headset can detect the direction in which the user is looking:\n\n```\n  if(event.lookingUp > 0){\n    // do something\n  }\n\n  if(event.lookingDown > 0){\n    // do something\n  }\n\n  if(event.lookingLeft > 0){\n    // do something\n  }\n\n  if(event.lookingRight > 0){\n    // do something\n  }\n```\n\n---\n\n#### Blink\n\nDetect if the user blinked:\n\n```\n  if(event.blink > 0){\n    // do something\n  }\n```\n\n---\n\n#### Winking Left / Right\n\nThe headset can detect if the user is winking:\n\n```\n  if(event.winkingLeft > 0){\n    // do something\n  }\n\n  if(event.winkingRight > 0){\n    // do something\n  }\n```\n\n---\n\n#### Laugh\n\nDetect if the user is laughing:\n\n```\n  if(event.laugh > 0){\n    // do something\n  }\n```\n\n---\n\n#### Gyroscope\n\nDetect changes in gyroscope data:\n\n```\n  if(event.gyroX){\n    // do something\n  }\n\n  if(event.gyroX){\n    // do something\n  }\n```\n\n---\n\n\n#### Cognitive Actions (Only working with the EmoComposer at the moment)\n\nActions available:\n\n- push\n- pull\n- lift\n- drop\n- left\n- right\n- rotate left\n- rotate right\n- rotate clockwise\n- rotate counter clockwise\n- rotate reverse\n- disappear\n\n```\n  switch(cognitivAction){\n    case 2:\n      console.log(\'push\')\n      break;\n    case 4:\n      console.log(\'pull\')\n      break;\n    case 8:\n      console.log(\'lift\')\n      break;\n    case 16:\n      console.log(\'drop\')\n      break;\n    case 32:\n      console.log(\'left\')\n      break;\n    case 64:\n      console.log(\'right\')\n      break;\n    case 128:\n      console.log(\'rotate left\')\n      break;\n    case 256:\n      console.log(\'rotate right\')\n      break;\n    case 512:\n      console.log(\'rotate clockwise\')\n      break;\n    case 1024:\n      console.log(\'rotate counter clockwise\')\n      break;\n    case 2048:\n      console.log(\'rotate forwards\')\n      break;\n    case 4096:\n      console.log(\'rotate reverse\')\n    case 8192:\n      console.log(\'disappear\')\n  }\n\n```\n\n---\n\n## Next steps\n\n* Get cognitive actions working.\n\n## Special Thanks\n\nThanks to [Cam Swords](https://github.com/camswords) for his help :)\n\n## License\n\nLicensed under the MIT license.\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: 'acc3c983fcb61f2d9c28006e3ff42a615b9effbe',
+21 silly publish   _id: 'epocjs@2.1.1',
+21 silly publish   _shasum: '879c53b4c1efb6786fdd76fb3a4b63f69ced748c',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name epocjs
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'epocjs',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'epocjs',
+26 silly mapToRegistry   name: 'epocjs',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/epocjs
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /Users/charliegerard/.npm/epocjs/2.1.1/package.tgz
+30 verbose request uri https://registry.npmjs.org/epocjs
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 3:54:23 PM
+33 verbose request using bearer token for auth
+34 verbose request id 6aef156338651aeb
+35 http request PUT https://registry.npmjs.org/epocjs
+36 http 403 https://registry.npmjs.org/epocjs
+37 verbose headers { 'content-type': 'application/json',
+37 verbose headers   'cache-control': 'max-age=300',
+37 verbose headers   'content-length': '91',
+37 verbose headers   'accept-ranges': 'bytes',
+37 verbose headers   date: 'Wed, 25 Oct 2017 04:54:25 GMT',
+37 verbose headers   via: '1.1 varnish',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'x-served-by': 'cache-syd1625-SYD',
+37 verbose headers   'x-cache': 'MISS',
+37 verbose headers   'x-cache-hits': '0',
+37 verbose headers   'x-timer': 'S1508907264.512214,VS0,VE2152',
+37 verbose headers   vary: 'Accept-Encoding, Accept' }
+38 verbose request invalidating /Users/charliegerard/.npm/registry.npmjs.org/epocjs on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: You cannot publish over the previously published version 2.1.1. : epocjs
+40 verbose stack     at makeError (/Users/charliegerard/.nvm/versions/node/v6.10.2/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/Users/charliegerard/.nvm/versions/node/v6.10.2/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:290:14)
+40 verbose stack     at Request._callback (/Users/charliegerard/.nvm/versions/node/v6.10.2/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+40 verbose stack     at Request.self.callback (/Users/charliegerard/.nvm/versions/node/v6.10.2/lib/node_modules/npm/node_modules/request/request.js:187:22)
+40 verbose stack     at emitTwo (events.js:106:13)
+40 verbose stack     at Request.emit (events.js:191:7)
+40 verbose stack     at Request.<anonymous> (/Users/charliegerard/.nvm/versions/node/v6.10.2/lib/node_modules/npm/node_modules/request/request.js:1048:10)
+40 verbose stack     at emitOne (events.js:96:13)
+40 verbose stack     at Request.emit (events.js:188:7)
+40 verbose stack     at IncomingMessage.<anonymous> (/Users/charliegerard/.nvm/versions/node/v6.10.2/lib/node_modules/npm/node_modules/request/request.js:969:12)
+41 verbose statusCode 403
+42 verbose pkgid epocjs
+43 verbose cwd /Users/charliegerard/Projects/Personal_Projects/Personal-projects-github/emotivjs
+44 error Darwin 16.7.0
+45 error argv "/Users/charliegerard/.nvm/versions/node/v6.10.2/bin/node" "/Users/charliegerard/.nvm/versions/node/v6.10.2/bin/npm" "publish"
+46 error node v6.10.2
+47 error npm  v3.10.10
+48 error code E403
+49 error You cannot publish over the previously published version 2.1.1. : epocjs
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]
