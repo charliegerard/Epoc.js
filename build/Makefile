@@ -326,8 +326,8 @@ ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
 endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@
-cmd_regen_makefile = cd $(srcdir); /usr/local/lib/node_modules/node-gyp/gyp/gyp_main.py -fmake --ignore-environment "--toplevel-dir=." -I/Users/charliegerard/Projects/Personal_Projects/Personal-projects-github/emotivjs/build/config.gypi -I/usr/local/lib/node_modules/node-gyp/addon.gypi -I/Users/charliegerard/.node-gyp/6.10.2/include/node/common.gypi "--depth=." "-Goutput_dir=." "--generator-output=build" "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/Users/charliegerard/.node-gyp/6.10.2" "-Dnode_gyp_dir=/usr/local/lib/node_modules/node-gyp" "-Dnode_lib_file=node.lib" "-Dmodule_root_dir=/Users/charliegerard/Projects/Personal_Projects/Personal-projects-github/emotivjs" binding.gyp
-Makefile: $(srcdir)/../../../../../../usr/local/lib/node_modules/node-gyp/addon.gypi $(srcdir)/build/config.gypi $(srcdir)/binding.gyp $(srcdir)/../../../../.node-gyp/6.10.2/include/node/common.gypi
+cmd_regen_makefile = cd $(srcdir); /usr/local/lib/node_modules/npm/node_modules/node-gyp/gyp/gyp_main.py -fmake --ignore-environment "--toplevel-dir=." -I/Users/charlieg/Projects/personal-projects-github/Epoc.js/build/config.gypi -I/usr/local/lib/node_modules/npm/node_modules/node-gyp/addon.gypi -I/Users/charlieg/.node-gyp/6.11.3/include/node/common.gypi "--depth=." "-Goutput_dir=." "--generator-output=build" "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/Users/charlieg/.node-gyp/6.11.3" "-Dnode_gyp_dir=/usr/local/lib/node_modules/npm/node_modules/node-gyp" "-Dnode_lib_file=node.lib" "-Dmodule_root_dir=/Users/charlieg/Projects/personal-projects-github/Epoc.js" binding.gyp
+Makefile: $(srcdir)/../../../../../usr/local/lib/node_modules/npm/node_modules/node-gyp/addon.gypi $(srcdir)/build/config.gypi $(srcdir)/binding.gyp $(srcdir)/../../../.node-gyp/6.11.3/include/node/common.gypi
 	$(call do_cmd,regen_makefile)
 
 # "all" is a concatenation of the "all" targets from all the included

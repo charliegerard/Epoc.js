@@ -2,7 +2,7 @@
 
 This framework provides an interface to access data from the Emotiv EPOC brain sensor using Node.js.
 
-To use this framework, you're gonna need an EPOC or EPOC+ that you can buy [here](https://emotiv.com/).
+To use this framework, you're gonna need an EPOC / EPOC+ or Insight that you can buy [here](https://emotiv.com/).
 
 Originally based on the [epocutils library](http://stephaneag.github.io/epocutils/) by [@StephaneAG](https://github.com/stephaneAG)
 
@@ -16,9 +16,14 @@ Originally based on the [epocutils library](http://stephaneag.github.io/epocutil
 
 ## How to Install
 
-If you haven't already downloaded the SDK, clone or download [this repo](https://github.com/Emotiv/community-sdk) and copy the `edk.framework` to `/Library/Frameworks` (on Mac).
+If you haven't already downloaded the SDK, clone or download [this repo](https://github.com/Emotiv/community-sdk) and copy the `edk.framework` file (community-sdk > lib > Mac > edk.framework) to `/Library/Frameworks` (on Mac).
 
-In your terminal, run:
+Either clone this repo and run
+
+```
+  npm install
+```
+or just run:
 
 ```
   npm install epocjs

@@ -16,7 +16,7 @@
                    },
                     "link_settings": {
                         "libraries": [
-                         "../lib/libedk.1.0.0.dylib",
+                        #  "../lib/libedk.1.0.0.dylib",
                          "/Library/Frameworks/edk.framework/edk"
                         ],
                         "include_dirs": ["./lib/includes/"]

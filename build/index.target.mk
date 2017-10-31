@@ -46,10 +46,10 @@ CFLAGS_OBJC_Debug :=
 CFLAGS_OBJCC_Debug :=
 
 INCS_Debug := \
-	-I/Users/charliegerard/.node-gyp/6.10.2/include/node \
-	-I/Users/charliegerard/.node-gyp/6.10.2/src \
-	-I/Users/charliegerard/.node-gyp/6.10.2/deps/uv/include \
-	-I/Users/charliegerard/.node-gyp/6.10.2/deps/v8/include \
+	-I/Users/charlieg/.node-gyp/6.11.3/include/node \
+	-I/Users/charlieg/.node-gyp/6.11.3/src \
+	-I/Users/charlieg/.node-gyp/6.11.3/deps/uv/include \
+	-I/Users/charlieg/.node-gyp/6.11.3/deps/v8/include \
 	-I$(srcdir)/node_modules/nan \
 	-I$(srcdir)/lib/includes
 
@@ -95,10 +95,10 @@ CFLAGS_OBJC_Release :=
 CFLAGS_OBJCC_Release :=
 
 INCS_Release := \
-	-I/Users/charliegerard/.node-gyp/6.10.2/include/node \
-	-I/Users/charliegerard/.node-gyp/6.10.2/src \
-	-I/Users/charliegerard/.node-gyp/6.10.2/deps/uv/include \
-	-I/Users/charliegerard/.node-gyp/6.10.2/deps/v8/include \
+	-I/Users/charlieg/.node-gyp/6.11.3/include/node \
+	-I/Users/charlieg/.node-gyp/6.11.3/src \
+	-I/Users/charlieg/.node-gyp/6.11.3/deps/uv/include \
+	-I/Users/charlieg/.node-gyp/6.11.3/deps/v8/include \
 	-I$(srcdir)/node_modules/nan \
 	-I$(srcdir)/lib/includes
 
@@ -158,7 +158,6 @@ LIBTOOLFLAGS_Release := \
 	-Wl,-search_paths_first
 
 LIBS := \
-	../lib/libedk.1.0.0.dylib \
 	/Library/Frameworks/edk.framework/edk
 
 $(builddir)/index.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
