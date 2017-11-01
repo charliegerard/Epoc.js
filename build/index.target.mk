@@ -51,7 +51,8 @@ INCS_Debug := \
 	-I/Users/charlieg/.node-gyp/6.11.3/deps/uv/include \
 	-I/Users/charlieg/.node-gyp/6.11.3/deps/v8/include \
 	-I$(srcdir)/node_modules/nan \
-	-I$(srcdir)/lib/includes
+	-I$(srcdir)/lib/includes \
+	-I$(srcdir)/lib
 
 DEFS_Release := \
 	'-DNODE_GYP_MODULE_NAME=index' \
@@ -100,7 +101,8 @@ INCS_Release := \
 	-I/Users/charlieg/.node-gyp/6.11.3/deps/uv/include \
 	-I/Users/charlieg/.node-gyp/6.11.3/deps/v8/include \
 	-I$(srcdir)/node_modules/nan \
-	-I$(srcdir)/lib/includes
+	-I$(srcdir)/lib/includes \
+	-I$(srcdir)/lib
 
 OBJS := \
 	$(obj).target/$(TARGET)/epoc.o
