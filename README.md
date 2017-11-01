@@ -16,9 +16,11 @@ Originally based on the [epocutils library](http://stephaneag.github.io/epocutil
 
 ## How to Install
 
-If you haven't already downloaded the SDK, clone or download [this repo](https://github.com/Emotiv/community-sdk) and copy the `edk.framework` file (community-sdk > lib > Mac > edk.framework) to `/Library/Frameworks` (on Mac).
+* Download the **Emotiv Community SDK v3.4.0** [here](https://github.com/Emotiv/community-sdk/releases) and copy the `edk.framework` file (community-sdk > lib > Mac > edk.framework) to `/Library/Frameworks` (on Mac).
 
-Either clone this repo and run
+*The latest version of the SDK at the moment is 3.5.0 but it is not entirely compatible with this framework.*
+
+* Either clone this repo and run
 
 ```
   npm install
@@ -27,6 +29,14 @@ or just run:
 
 ```
   npm install epocjs
+```
+
+## Run the example code
+
+If you just want to test that the framework is working, you can run:
+
+```
+  node example/controls.js
 ```
 
 
