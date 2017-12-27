@@ -4,9 +4,7 @@ var Epoc = require('bindings')('index');
 var pastAction;
 var action = "?";
 
-// Use `connectToEmoComposer` or `connectToLiveData`.
-
-Epoc.connectToLiveData(function(event){
+Epoc.connectToLiveData("/Users/<username>/Library/Application Support/Emotiv/Profiles/<filename>.emu", function(event){
 	if(event){
 		pastAction = action;
 

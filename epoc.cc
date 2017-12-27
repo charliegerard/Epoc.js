@@ -3,7 +3,13 @@
 #include <node.h>
 
 void ConnectToLiveData(const Nan::FunctionCallbackInfo<Value>& info){
-  Local<Function> callbackHandle = info[0].As<Function>();
+  if(info.Length() < 2){
+    return Nan::ThrowSyntaxError("wrong number of arguments");
+  }
+  Local<Function> callbackHandle = info[1].As<Function>();
+
+  v8::String::Utf8Value param1(info[0]->ToString());
+  epocutils::pathToProfileFile = string(*param1);
 
   epocutils::dataOption = 1;
   epocutils::connectionState = epocutils::getConnectionState(epocutils::dataOption);
@@ -16,6 +22,10 @@ void ConnectToLiveData(const Nan::FunctionCallbackInfo<Value>& info){
 }
 
 void ConnectToEmoComposer(const Nan::FunctionCallbackInfo<Value>& info){
+  if(info.Length() > 1){
+    return Nan::ThrowSyntaxError("wrong number of arguments");
+  }
+
   Local<Function> callbackHandle = info[0].As<Function>();
 
   epocutils::dataOption = 2;
@@ -31,21 +41,21 @@ void ConnectToEmoComposer(const Nan::FunctionCallbackInfo<Value>& info){
 int epocutils::getConnectionState(int optionChosen){
   switch(optionChosen){
     case 1:
-      if (IEE_EngineConnect() == EDK_OK){
-        std::cout << "Now connected to Epoc / Insight headset" << std::endl;
-        return 0;
-      } else {
-        std::cout << "Could not connect to Epoc / Insight headset" << std::endl;
+      if (IEE_EngineConnect("Emotiv Systems-5") != EDK_OK){
+        cout << "Could not connect to EmoEngine" << endl;
         return -1;
+      } else {
+        cout << "Connected to EmoEngine" << endl;
+        return 0;
       }
       break;
 
     case 2:
       if ( IEE_EngineRemoteConnect("127.0.0.1", 1726) != EDK_OK) {
-        std::string errMsg = "epocutils:: Cannot connect to EmoComposer on [127.0.0.1]:1726";
+        cout <<  "Cannot connect to EmoComposer on [127.0.0.1]:1726" << endl;
         return -1;
       } else {
-        std::cout << "Connected to EmoComposer" << std::endl;
+        cout << "Connected to EmoComposer" << endl;
         return 0;
       }
       break;
@@ -63,15 +73,23 @@ void epocutils::handleEpocEvents(int dataOption, int& connectionState, EmoEngine
     Local<Object> event = Nan::New<Object>();
 
     if(epocState == EDK_OK){
+      IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
+      IEE_EmoEngineEventGetUserId(eEvent, &userID);
+
+      if(eventType == IEE_UserAdded){
+        cout << "Connected to Epoc / Insight headset" << endl;
+      } else if(eventType == IEE_UserRemoved){
+        cout << "Disconnected from Epoc / Insight headset" << endl;
+        IEE_DisconnectDevice();
+        IEE_EngineDisconnect();
+      }
+
       if(dataOption == 1){
         if(!profileLoaded){
           epocutils::loadProfile(userID);
           epocutils::showTrainedActions(userID);
         }
       }
-
-      IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
-      IEE_EmoEngineEventGetUserId(eEvent, &userID);
 
       if(eventType == IEE_EmoStateUpdated){
         epocutils::getGyroData(event, 0);
@@ -89,12 +107,12 @@ void epocutils::handleEpocEvents(int dataOption, int& connectionState, EmoEngine
 }
 
 void epocutils::loadProfile(unsigned int userID){
-  if (IEE_LoadUserProfile(userID, epocutils::profileNameForLoading.c_str()) == EDK_OK){
-    std::cout << "Load Profile : done" << std::endl;
+  if (IEE_LoadUserProfile(userID, epocutils::pathToProfileFile.c_str()) == EDK_OK){
+    cout << "User profile loaded" << endl;
     profileLoaded = true;
   } else {
     if(!profileNotLoadedIndicated){
-      std::cout << "Can't load profile." << std::endl;
+      cout << "Can't load profile." << endl;
     }
     profileLoaded = false;
     profileNotLoadedIndicated = true;
@@ -104,6 +122,10 @@ void epocutils::loadProfile(unsigned int userID){
 void epocutils::showTrainedActions(unsigned int userID){
   unsigned long pTrainedActionsOut = 0;
   IEE_MentalCommandGetTrainedSignatureActions(userID, &pTrainedActionsOut);
+  //
+  // if(pTrainedActionsOut & 0x0002){
+  //   std::cout << "* push" << std::endl;
+  // }
 }
 
 void epocutils::getGyroData(Local<Object> event, unsigned int userID){

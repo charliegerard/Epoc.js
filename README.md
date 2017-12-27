@@ -12,7 +12,6 @@ Originally based on the [epocutils library](http://stephaneag.github.io/epocutil
 
 * Known issues:
   * Cognitive Actions are not working at the moment when wearing the sensor.
-  * Need to provide a way for users to provide the path to their own user data file when launching the program.
 
 ## How to Install
 
@@ -31,11 +30,14 @@ or just run:
 
 ## Run the example code
 
-If you just want to test that the framework is working, you can run:
+If you just want to test that the framework is working, you can turn on your Emotiv headset and run:
 
 ```
   node example/controls.js
 ```
+
+The example code should output the value of the x axis of the gyroscope.
+
 
 
 ## How to Use
@@ -44,15 +46,28 @@ When writing a program, use either the `connectToEmoComposer` or `connectToLiveD
 
 Example of simple program:
 
-```
+```JavaScript
   var Epoc = require('epocjs')();
 
-  Epoc.connectToLiveData(function(event){
+  Epoc.connectToLiveData("<path to your profile file>", function(event){
     if(event.smile > 0){
       console.log('smiling')
     }
   })
 ```
+or:
+
+```JavaScript
+  var Epoc = require('epocjs')();
+
+  Epoc.connectToEmoComposer(function(event){
+    if(event.smile > 0){
+      console.log('smiling')
+    }
+  })
+```
+
+The path to your user file should be something like this */Users/< username >/Library/Application Support/Emotiv/Profiles/< filename >.emu*
 
 ## Events
 
@@ -62,7 +77,7 @@ Example of simple program:
 
 If the value is superior to 0, the headset is detecting that the user is smiling.
 
-```
+```JavaScript
   if(event.smile > 0){
     // do something
   }
@@ -74,7 +89,7 @@ If the value is superior to 0, the headset is detecting that the user is smiling
 
 The headset can detect the direction in which the user is looking:
 
-```
+```JavaScript
   if(event.lookingUp > 0){
     // do something
   }
@@ -98,7 +113,7 @@ The headset can detect the direction in which the user is looking:
 
 Detect if the user blinked:
 
-```
+```JavaScript
   if(event.blink > 0){
     // do something
   }
@@ -110,7 +125,7 @@ Detect if the user blinked:
 
 The headset can detect if the user is winking:
 
-```
+```JavaScript
   if(event.winkingLeft > 0){
     // do something
   }
@@ -126,7 +141,7 @@ The headset can detect if the user is winking:
 
 Detect if the user is laughing:
 
-```
+```JavaScript
   if(event.laugh > 0){
     // do something
   }
@@ -138,7 +153,7 @@ Detect if the user is laughing:
 
 Detect changes in gyroscope data:
 
-```
+```JavaScript
   if(event.gyroX){
     // do something
   }
@@ -168,7 +183,7 @@ Actions available:
 - rotate reverse
 - disappear
 
-```
+```JavaScript
   switch(cognitivAction){
     case 2:
       console.log('push')
@@ -208,7 +223,6 @@ Actions available:
     case 8192:
       console.log('disappear')
   }
-
 ```
 
 ---

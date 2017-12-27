@@ -28,7 +28,7 @@ namespace epocutils{
     int xmax, ymax, gyroX, gyroY = 0;
     bool profileLoaded = false;
     bool profileNotLoadedIndicated = false;
-    string profileNameForLoading = "";
+    string pathToProfileFile;
 
     int getConnectionState(int optionChosen);
     void getGyroData(Local<Object> event, unsigned int userID);
