@@ -52,7 +52,6 @@ INCS_Debug := \
 	-I/Users/charlieg/.node-gyp/7.10.1/deps/uv/include \
 	-I/Users/charlieg/.node-gyp/7.10.1/deps/v8/include \
 	-I$(srcdir)/node_modules/nan \
-	-I$(srcdir)/node_modules/streaming-worker-sdk \
 	-I$(srcdir)/lib/includes \
 	-I$(srcdir)/lib
 
@@ -104,7 +103,6 @@ INCS_Release := \
 	-I/Users/charlieg/.node-gyp/7.10.1/deps/uv/include \
 	-I/Users/charlieg/.node-gyp/7.10.1/deps/v8/include \
 	-I$(srcdir)/node_modules/nan \
-	-I$(srcdir)/node_modules/streaming-worker-sdk \
 	-I$(srcdir)/lib/includes \
 	-I$(srcdir)/lib
 

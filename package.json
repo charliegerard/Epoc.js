@@ -1,6 +1,6 @@
 {
   "name": "epocjs",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Node.js Addon for the Emotiv EPOC headset",
   "author": "Charlie Gerard <charlie.a.gerard@gmail.com>",
   "git repository": "https://github.com/charliegerard/Epoc.js",
@@ -15,7 +15,7 @@
   "gypfile": true,
   "dependencies": {
     "bindings": "~1.2.1",
-    "nan": "*",
+    "nan": "2.8.0",
     "node-gyp": "^3.6.2",
     "underscore": "^1.8.3"
   }
