@@ -33,6 +33,7 @@ CFLAGS_C_Debug := \
 # Flags passed to only C++ files.
 CFLAGS_CC_Debug := \
 	-std=gnu++0x \
+	-stdlib=libc++ \
 	-fno-rtti \
 	-fno-exceptions \
 	-fno-threadsafe-statics \
@@ -46,11 +47,12 @@ CFLAGS_OBJC_Debug :=
 CFLAGS_OBJCC_Debug :=
 
 INCS_Debug := \
-	-I/Users/charlieg/.node-gyp/6.11.3/include/node \
-	-I/Users/charlieg/.node-gyp/6.11.3/src \
-	-I/Users/charlieg/.node-gyp/6.11.3/deps/uv/include \
-	-I/Users/charlieg/.node-gyp/6.11.3/deps/v8/include \
+	-I/Users/charlieg/.node-gyp/7.10.1/include/node \
+	-I/Users/charlieg/.node-gyp/7.10.1/src \
+	-I/Users/charlieg/.node-gyp/7.10.1/deps/uv/include \
+	-I/Users/charlieg/.node-gyp/7.10.1/deps/v8/include \
 	-I$(srcdir)/node_modules/nan \
+	-I$(srcdir)/node_modules/streaming-worker-sdk \
 	-I$(srcdir)/lib/includes \
 	-I$(srcdir)/lib
 
@@ -83,6 +85,7 @@ CFLAGS_C_Release := \
 # Flags passed to only C++ files.
 CFLAGS_CC_Release := \
 	-std=gnu++0x \
+	-stdlib=libc++ \
 	-fno-rtti \
 	-fno-exceptions \
 	-fno-threadsafe-statics \
@@ -96,11 +99,12 @@ CFLAGS_OBJC_Release :=
 CFLAGS_OBJCC_Release :=
 
 INCS_Release := \
-	-I/Users/charlieg/.node-gyp/6.11.3/include/node \
-	-I/Users/charlieg/.node-gyp/6.11.3/src \
-	-I/Users/charlieg/.node-gyp/6.11.3/deps/uv/include \
-	-I/Users/charlieg/.node-gyp/6.11.3/deps/v8/include \
+	-I/Users/charlieg/.node-gyp/7.10.1/include/node \
+	-I/Users/charlieg/.node-gyp/7.10.1/src \
+	-I/Users/charlieg/.node-gyp/7.10.1/deps/uv/include \
+	-I/Users/charlieg/.node-gyp/7.10.1/deps/v8/include \
 	-I$(srcdir)/node_modules/nan \
+	-I$(srcdir)/node_modules/streaming-worker-sdk \
 	-I$(srcdir)/lib/includes \
 	-I$(srcdir)/lib
 
@@ -139,7 +143,8 @@ LDFLAGS_Debug := \
 	-Wl,-search_paths_first \
 	-mmacosx-version-min=10.7 \
 	-arch x86_64 \
-	-L$(builddir)
+	-L$(builddir) \
+	-stdlib=libc++
 
 LIBTOOLFLAGS_Debug := \
 	-undefined dynamic_lookup \
@@ -152,7 +157,8 @@ LDFLAGS_Release := \
 	-Wl,-search_paths_first \
 	-mmacosx-version-min=10.7 \
 	-arch x86_64 \
-	-L$(builddir)
+	-L$(builddir) \
+	-stdlib=libc++
 
 LIBTOOLFLAGS_Release := \
 	-undefined dynamic_lookup \

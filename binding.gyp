@@ -4,7 +4,8 @@
       "target_name": "index",
       "sources": [ "epoc.cc"],
       "include_dirs" : [
-        "<!(node -e \"require('nan')\")"
+        "<!(node -e \"require('nan')\")",
+        "<!(node -e \"require('streaming-worker-sdk')\")"
       ],
       "conditions": [
                 ['OS=="mac"', {

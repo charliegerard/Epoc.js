@@ -8,7 +8,7 @@ Originally based on the [epocutils library](http://stephaneag.github.io/epocutil
 
 ## Status:
 
-* **Refactored to use latest SDK – Working with EmoComposer but still need to test while wearing the sensor.**
+* **Refactored to use latest SDK (v3.5.0).**
 
 * Known issues:
   * Cognitive Actions are not working at the moment when wearing the sensor.
@@ -17,8 +17,6 @@ Originally based on the [epocutils library](http://stephaneag.github.io/epocutil
 ## How to Install
 
 * Download the **Emotiv Community SDK v3.4.0** [here](https://github.com/Emotiv/community-sdk/releases) and copy the `edk.framework` file (community-sdk > lib > Mac > edk.framework) to `/Library/Frameworks` (on Mac).
-
-*The latest version of the SDK at the moment is 3.5.0 but it is not entirely compatible with this framework.*
 
 * Either clone this repo and run
 
@@ -42,12 +40,14 @@ If you just want to test that the framework is working, you can run:
 
 ## How to Use
 
+When writing a program, use either the `connectToEmoComposer` or `connectToLiveData` function to use the emulator or the data coming from the device.
+
 Example of simple program:
 
 ```
   var Epoc = require('epocjs')();
 
-  Epoc.connect(function(event){
+  Epoc.connectToLiveData(function(event){
     if(event.smile > 0){
       console.log('smiling')
     }
