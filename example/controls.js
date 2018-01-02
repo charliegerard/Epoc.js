@@ -3,8 +3,8 @@
 var Epoc = require('bindings')('index');
 var pastAction;
 var action = "?";
-
-Epoc.connectToLiveData("/Users/<username>/Library/Application Support/Emotiv/Profiles/<filename>.emu", function(event){
+//
+Epoc.connectToEmoComposer(function(event){
 	if(event){
 		pastAction = action;
 
@@ -93,3 +93,7 @@ Epoc.connectToLiveData("/Users/<username>/Library/Application Support/Emotiv/Pro
 		}
 	}
 })
+
+// Epoc.connectToLiveData("/Users/charlieg/Library/Application Support/Emotiv/Profiles/charlie.emu", function(event){
+//
+// })

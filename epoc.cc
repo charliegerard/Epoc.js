@@ -3,9 +3,11 @@
 #include <node.h>
 
 void ConnectToLiveData(const Nan::FunctionCallbackInfo<Value>& info){
+  // Throw an error if the path to the profile file is not provided.
   if(info.Length() < 2){
     return Nan::ThrowSyntaxError("wrong number of arguments");
   }
+  //The callback function should be the 2nd argument passed.
   Local<Function> callbackHandle = info[1].As<Function>();
 
   v8::String::Utf8Value param1(info[0]->ToString());
@@ -62,17 +64,18 @@ int epocutils::getConnectionState(int optionChosen){
     default:
       break;
   }
-  std::cout << "Option not available" << std::endl;
-  std::cout << "Exit program" << std::endl;
+  cout << "Option not available" << endl;
+  cout << "Exit program" << endl;
   return -1;
 }
 
 void epocutils::handleEpocEvents(int dataOption, int& connectionState, EmoEngineEventHandle eEvent, EmoStateHandle eState, int& epocState, unsigned int userID, epocutils::EpocHeadset_t user, Local<Function> callbackHandle){
+
   if(connectionState == 0){
     epocState = IEE_EngineGetNextEvent(eEvent);
     Local<Object> event = Nan::New<Object>();
 
-    if(epocState == EDK_OK){
+    if(epocState == EDK_OK){ // new event retrieved
       IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
       IEE_EmoEngineEventGetUserId(eEvent, &userID);
 
@@ -84,18 +87,18 @@ void epocutils::handleEpocEvents(int dataOption, int& connectionState, EmoEngine
         IEE_EngineDisconnect();
       }
 
-      if(dataOption == 1){
-        if(!profileLoaded){
-          epocutils::loadProfile(userID);
-          epocutils::showTrainedActions(userID);
-        }
+      if(dataOption == 1 && !profileLoaded){
+        epocutils::loadProfile(userID);
+        epocutils::showTrainedActions(userID);
       }
 
       if(eventType == IEE_EmoStateUpdated){
         epocutils::getGyroData(event, 0);
         IEE_EmoEngineEventGetEmoState(eEvent, eState);
-        epocutils::handleMentalCommandsEvent(event, user, eState, eEvent);
+
         epocutils::handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+        epocutils::handleMentalCommandsEvent(event, user, eState, eEvent);
+        // epocutils::showCurrentActionPower(eState);
       }
 
       Local<Value> parameters[1];
@@ -160,9 +163,7 @@ void epocutils::handleMentalCommandsEvent(Local<Object> event, epocutils::EpocHe
   if(actionType & 0x0001){
     // std::cout << "new mental command: neutral"  << std::endl;
   }
-  //
 
-  // std::cout << actionType << std::endl;
   user.cognitivAction = actionType;
   user.cognitivActionPower = actionPower;
   Nan::Set(event, Nan::New("cognitivAction").ToLocalChecked(), Nan::New(user.cognitivAction));
