@@ -10,8 +10,7 @@ Originally based on the [epocutils library](http://stephaneag.github.io/epocutil
 
 * **Refactored to use latest SDK (v3.5.0).**
 
-* Known issues:
-  * Cognitive Actions are not working at the moment when wearing the sensor.
+* Cognitive actions should now be working.
 
 ## How to Install
 
@@ -27,18 +26,6 @@ or just run:
 ```
   npm install epocjs
 ```
-
-## Run the example code
-
-If you just want to test that the framework is working, you can turn on your Emotiv headset and run:
-
-```
-  node example/controls.js
-```
-
-The example code should output the value of the x axis of the gyroscope.
-
-
 
 ## How to Use
 
@@ -220,16 +207,14 @@ Actions available:
       break;
     case 4096:
       console.log('rotate reverse')
+      break;
     case 8192:
       console.log('disappear')
+      break;
   }
 ```
 
 ---
-
-## Next steps
-
-* Get cognitive actions working.
 
 ## Special Thanks
 
