@@ -153,7 +153,7 @@ Detect changes in gyroscope data:
 ---
 
 
-#### Cognitive Actions (Only working with the EmoComposer at the moment)
+#### Cognitive Actions
 
 Actions available:
 
