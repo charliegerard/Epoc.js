@@ -65,13 +65,16 @@ namespace epocutils{
       float cognitivActionPower;
     };
 
-    void handleEpocEvents(int dataOption, int& connectionState, EmoEngineEventHandle eEvent, EmoStateHandle eState, int& epocState, unsigned int userID, EpocHeadset_t user, Local<Function> callbackHandle);
-    void handleFacialExpressionsEvents(EmoStateHandle eState, Local<Object> event, EpocHeadset_t user, Local<Function> callbackHandle);
-    void sendFacialExpressionsEventsToJs(Local<Object> event, EpocHeadset_t user, Local<Function> callbackHandle);
+    EpocHeadset_t user;
+
+    void handleEpocEvents(int dataOption, int& connectionState, EmoEngineEventHandle eEvent, EmoStateHandle eState, int& epocState, unsigned int userID, EpocHeadset_t user, Local<Function> callbackHandle, Local<Object> event);
+    void handleFacialExpressionsEvents(EmoStateHandle eState, Local<Object> event, EpocHeadset_t user);
+    void sendFacialExpressionsEventsToJs(Local<Object> event, EpocHeadset_t user);
     void handleMentalCommandsEvent(Local<Object> event, EpocHeadset_t user, EmoStateHandle eState, EmoEngineEventHandle eEvent);
     void showCurrentActionPower(EmoStateHandle eState);
 
-    EpocHeadset_t user;
+    void checkEventType(IEE_Event_t eventType, EmoEngineEventHandle eEvent, EmoStateHandle eState, Local<Object> event);
+
 };
 
 #endif // epocutils_h

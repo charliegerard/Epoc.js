@@ -16,9 +16,11 @@ void ConnectToLiveData(const Nan::FunctionCallbackInfo<Value>& info){
   epocutils::dataOption = 1;
   epocutils::connectionState = epocutils::getConnectionState(epocutils::dataOption);
 
+  Local<Object> event = Nan::New<Object>();
+
   if(epocutils::connectionState != -1){
     while(true){
-      epocutils::handleEpocEvents(epocutils::dataOption, epocutils::connectionState, epocutils::eEvent, epocutils::eState, epocutils::epocState, epocutils::userID, epocutils::user, callbackHandle);
+      epocutils::handleEpocEvents(epocutils::dataOption, epocutils::connectionState, epocutils::eEvent, epocutils::eState, epocutils::epocState, epocutils::userID, epocutils::user, callbackHandle, event);
     }
   }
 }
@@ -33,9 +35,11 @@ void ConnectToEmoComposer(const Nan::FunctionCallbackInfo<Value>& info){
   epocutils::dataOption = 2;
   epocutils::connectionState = epocutils::getConnectionState(epocutils::dataOption);
 
+  Local<Object> event = Nan::New<Object>();
+
   if(epocutils::connectionState != -1){
     while(true){
-      epocutils::handleEpocEvents(epocutils::dataOption, epocutils::connectionState, epocutils::eEvent, epocutils::eState, epocutils::epocState, epocutils::userID, epocutils::user, callbackHandle);
+      epocutils::handleEpocEvents(epocutils::dataOption, epocutils::connectionState, epocutils::eEvent, epocutils::eState, epocutils::epocState, epocutils::userID, epocutils::user, callbackHandle, event);
     }
   }
 }
@@ -69,11 +73,10 @@ int epocutils::getConnectionState(int optionChosen){
   return -1;
 }
 
-void epocutils::handleEpocEvents(int dataOption, int& connectionState, EmoEngineEventHandle eEvent, EmoStateHandle eState, int& epocState, unsigned int userID, epocutils::EpocHeadset_t user, Local<Function> callbackHandle){
+void epocutils::handleEpocEvents(int dataOption, int& connectionState, EmoEngineEventHandle eEvent, EmoStateHandle eState, int& epocState, unsigned int userID, epocutils::EpocHeadset_t user, Local<Function> callbackHandle, Local<Object> event){
 
   if(connectionState == 0){
     epocState = IEE_EngineGetNextEvent(eEvent);
-    Local<Object> event = Nan::New<Object>();
 
     if(epocState == EDK_OK){ // new event retrieved
       IEE_Event_t eventType = IEE_EmoEngineEventGetType(eEvent);
@@ -96,7 +99,7 @@ void epocutils::handleEpocEvents(int dataOption, int& connectionState, EmoEngine
         epocutils::getGyroData(event, 0);
         IEE_EmoEngineEventGetEmoState(eEvent, eState);
 
-        epocutils::handleFacialExpressionsEvents(eState, event, user, callbackHandle);
+        epocutils::handleFacialExpressionsEvents(eState, event, user);
         epocutils::handleMentalCommandsEvent(event, user, eState, eEvent);
         // epocutils::showCurrentActionPower(eState);
       }
@@ -166,11 +169,12 @@ void epocutils::handleMentalCommandsEvent(Local<Object> event, epocutils::EpocHe
 
   user.cognitivAction = actionType;
   user.cognitivActionPower = actionPower;
+
   Nan::Set(event, Nan::New("cognitivAction").ToLocalChecked(), Nan::New(user.cognitivAction));
   Nan::Set(event, Nan::New("cognitivActionPower").ToLocalChecked(), Nan::New(user.cognitivActionPower));
 }
 
-void epocutils::handleFacialExpressionsEvents(EmoStateHandle eState, Local<Object> event, epocutils::EpocHeadset_t user, Local<Function> callbackHandle){
+void epocutils::handleFacialExpressionsEvents(EmoStateHandle eState, Local<Object> event, epocutils::EpocHeadset_t user){
   user.isBlinking = IS_FacialExpressionIsBlink(eState);
   user.isWinkingLeft = IS_FacialExpressionIsLeftWink(eState);
   user.isWinkingRight = IS_FacialExpressionIsRightWink(eState);
@@ -197,10 +201,10 @@ void epocutils::handleFacialExpressionsEvents(EmoStateHandle eState, Local<Objec
   user.laugh = expressivStates[ FE_LAUGH ];
   user.frown = expressivStates[ FE_FROWN ];
 
-  epocutils::sendFacialExpressionsEventsToJs(event, user, callbackHandle);
+  epocutils::sendFacialExpressionsEventsToJs(event, user);
 }
 
-void epocutils::sendFacialExpressionsEventsToJs(Local<Object> event, epocutils::EpocHeadset_t user, Local<Function> callbackHandle){
+void epocutils::sendFacialExpressionsEventsToJs(Local<Object> event, epocutils::EpocHeadset_t user){
   Nan::Set(event, Nan::New("blink").ToLocalChecked(), Nan::New(user.isBlinking));
   Nan::Set(event, Nan::New("winkingLeft").ToLocalChecked(), Nan::New(user.isWinkingLeft));
   Nan::Set(event, Nan::New("winkingRight").ToLocalChecked(), Nan::New(user.isWinkingRight));
