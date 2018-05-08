@@ -18,8 +18,19 @@ void ConnectToLiveData(const Nan::FunctionCallbackInfo<Value>& info){
 
   Local<Object> event = Nan::New<Object>();
 
+  int chargeLevel = 0, maxChargeLevel = 0, batteryLevel = 0, previousBatteryLevel = 0;
+
   if(epocutils::connectionState != -1){
     while(true){
+      // Get battery level and send it to Node.js if it changes
+      previousBatteryLevel = batteryLevel;
+      IS_GetBatteryChargeLevel(epocutils::eState, &chargeLevel, &maxChargeLevel);
+      batteryLevel = chargeLevel * 100 / maxChargeLevel;
+
+      if(batteryLevel != previousBatteryLevel){
+        Nan::Set(event, Nan::New("batteryLevel").ToLocalChecked(), Nan::New(batteryLevel));
+      }
+      // Handle facial expressions and mental commands
       epocutils::handleEpocEvents(epocutils::dataOption, epocutils::connectionState, epocutils::eEvent, epocutils::eState, epocutils::epocState, epocutils::userID, epocutils::user, callbackHandle, event);
     }
   }

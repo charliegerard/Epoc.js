@@ -77,7 +77,7 @@ Epoc.connectToEmoComposer(function(event){
 					action = 'disappear';
 					break;
 			}
-		}
+    }
 
 		if(event.gyroX){
 			console.log("gyroX: ", event.gyroX);
@@ -95,5 +95,7 @@ Epoc.connectToEmoComposer(function(event){
 })
 
 // Epoc.connectToLiveData("path/to/user/file", function(event){
-//
+//   if(event.batteryLevel && event.batteryLevel > 0){
+//     console.log(`Battery level: ${event.batteryLevel}%`);
+//   }
 // })

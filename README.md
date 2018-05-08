@@ -56,6 +56,21 @@ or:
 
 The path to your user file should be something like this */Users/< username >/Library/Application Support/Emotiv/Profiles/< filename >.emu*
 
+## Device data
+
+---
+
+Getting the battery level - only working when connecting to the device, not the EmoComposer.
+This event should happen everytime the battery level changes.
+
+```javascript
+  if(event.batteryLevel > 0){
+    //do something
+  }
+```
+
+---
+
 ## Events
 
 ---
