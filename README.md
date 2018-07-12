@@ -6,6 +6,10 @@ To use this framework, you're gonna need an EPOC / EPOC+ or Insight that you can
 
 Originally based on the [epocutils library](http://stephaneag.github.io/epocutils/) by [@StephaneAG](https://github.com/stephaneAG)
 
+## Demo:
+
+![mind controlled interface](epoc.gif)
+
 ## Status:
 
 * **Refactored to use latest SDK (v3.5.0).**
