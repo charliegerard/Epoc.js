@@ -145,7 +145,7 @@ Detect changes in gyroscope data:
     // do something
   }
 
-  if(event.gyroY{
+  if(event.gyroY){
     // do something
   }
 ```
