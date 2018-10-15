@@ -164,7 +164,7 @@ Detect changes in gyroscope data:
     // do something
   }
 
-  if(event.gyroX){
+  if(event.gyroY){
     // do something
   }
 ```
