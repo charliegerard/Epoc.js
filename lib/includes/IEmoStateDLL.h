@@ -423,7 +423,7 @@ extern "C" {
 
         \param state - EmoStateHandle
         \param x - the horizontal position of the eyes
-        \param y - the veritcal position of the eyes
+        \param y - the vertical position of the eyes
 
     */
     EMOSTATE_DLL_API void
